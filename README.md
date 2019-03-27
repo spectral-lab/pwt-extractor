@@ -1,4 +1,7 @@
-# starling-editor
+# pwt-extractor
+
+## What is PWT?
+See [here](https://docs.google.com/presentation/d/1ymAdCnPOHE0zmWonx3Z4-dZTxSzDACBRHViL6W8dvDw/edit#slide=id.p).
 
 ## Project setup
 ```
