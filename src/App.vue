@@ -13,8 +13,8 @@ const socket = io(`http://localhost:${socketServerPort}`);
 socket.on("connect", () => {
   console.log(`connected with your M4L! at ${socketServerPort}`);
 });
-socket.on("event", (...args)=>{
-  debugger;
+socket.on("disconnect", ()=>{
+  window.close();
 });
 
 export default {
