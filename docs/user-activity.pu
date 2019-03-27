@@ -1,0 +1,34 @@
+@startuml user-activity
+title User-Activity
+(*) --> "Launch Ableton Live"
+partition ableton {
+  "Launch Ableton Live" --> "Load Starling M4L Device"
+  "Load Starling M4L Device" --> "Play Synth"
+  "Load Starling M4L Device" --> "Load Preset from pull down menu"
+  "Load Starling M4L Device" --> "Click 'Create New' button"
+}
+partition Browser {
+  "Click 'Create New' button" --> "Read the instruction for audio file"
+  "Read the instruction for audio file" --> "Upload Audio File"
+  "Upload Audio File" --> "See the spectrogram"
+  "See the spectrogram" -right-> "Modify spectrogram parameter"
+  "Modify spectrogram parameter" -left-> "See the spectrogram"
+  "See the spectrogram" --> "Click Next Button"
+  "Click Next Button" --> "Read the instruction for extraction"
+  "Read the instruction for extraction" --> "Set the parameters"
+  "Set the parameters" --> "Click 'Run' button"
+  "Click 'Run' button" --> "See the result and play Starling"
+  "See the result and play Starling" --> "Click 'extract again' button"
+  "Click 'extract again' button" --> "Set the parameters"
+}
+
+partition Ableton {
+  "See the result and play Starling" --> "Reclick the 'Create New' button to close the browser"
+  "Reclick the 'Create New' button to close the browser" --> "Adjust the knobs to make sound cool"
+  "Adjust the knobs to make sound cool" --> "Click 'Save Preset' button"
+}
+
+
+
+
+@enduml
