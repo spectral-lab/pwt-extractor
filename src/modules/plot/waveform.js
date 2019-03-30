@@ -1,0 +1,42 @@
+// subfunction to plot waveform
+const waveform = (audioBuffer, canvas) => {
+  const thinOutArray = (array, DESIRED_LENGTH) => {
+    const denominator = Math.max(1, Math.ceil(array.length / DESIRED_LENGTH));
+    const thinArray = [];
+    for (let i = 0; i < array.length; i++) {
+      if (i % denominator === 0) {
+        thinArray.push(array[i]);
+      }
+    }
+    return thinArray;
+  }
+
+  const DESIRED_LENGTH = 500000;
+  const WAVEFORM_COLOR = 'rgb(5, 80, 180)';
+
+  const channelData = thinOutArray(audioBuffer.getChannelData(0), DESIRED_LENGTH);
+  const ctx = canvas.getContext('2d');
+  const centerAxis = canvas.height * 0.5;
+  const coef = canvas.height * 0.5;
+  const interval = canvas.width / ( channelData.length - 1 )
+
+  //  draw
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 1;
+  ctx.globalCompositeOperation = 'screen';
+  ctx.strokeStyle = WAVEFORM_COLOR;
+  ctx.beginPath();
+  
+  let px = 0;
+  let py = centerAxis + coef * channelData[0];
+  ctx.moveTo(px, py);
+  
+  for (let i = 1; i < channelData.length; i++) {
+    px += interval;
+    py = centerAxis + coef * channelData[i];
+    ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+}
+
+export default waveform;
