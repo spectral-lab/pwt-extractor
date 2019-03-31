@@ -7,7 +7,7 @@ export default {
   methods: {
     async postImage(){
       console.log('post');
-      const img = await fetch('./mock.png')
+      const img = await fetch('./mockSpectrogram.png')
       const ab = await img.arrayBuffer();
       const res = await fetch('http://localhost:5000', {
         method: 'POST',
@@ -19,7 +19,6 @@ export default {
         debugger;
       });
       console.log(res);
-      debugger;
     }
   }
 }
