@@ -1,8 +1,8 @@
 <template>
   <div class="open-button">
     <input v-on:change="handleChange" ref="soundfiles" type="file" id="soundupload" accept="audio/*" />
-    <div ref="waveform">
-      <canvas ref="waveformCanvas" width="800" height="300">current stock price: $3.15 + 0.15</canvas>
+    <div>
+      <canvas ref="waveform" width="800" height="300">waveform</canvas>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
       <g>
@@ -15,6 +15,9 @@
 <script>
 import { sumToMono, normalize, crop, resample } from '../modules/audioBufferProcess'
 import { waveform } from '../modules/plot'
+import { normalize2d } from '../modules/utils'
+import mockSpectrogram from '../../test/assets/mockSpectrogram.json'
+
 const context = new AudioContext({latencyHint: 'interactive', sampleRate: 20500});
 let normalizedAudioBuffer;
 
@@ -30,6 +33,7 @@ export default {
           reader.onload = resolve;
         })
       }
+      
       // Main
       const f = this.$refs.soundfiles.files[0];
       const DESIRED_DURATION = 10; //in seconds.
@@ -41,7 +45,9 @@ export default {
       normalizedAudioBuffer = normalize(croppedAudioBuffer);
       const resampleEvent = await resample(normalizedAudioBuffer, DESIRED_SAMPLE_RATE);
       const resampledAudioBuffer = resampleEvent.renderedBuffer;
-      waveform(resampledAudioBuffer, this.$refs.waveformCanvas);
+      waveform(resampledAudioBuffer, this.$refs.waveform);
+      const normalizedAmp2d = normalize2d(mockSpectrogram.spectrogram);
+      // spectrogram(normalizedAmp2d, this.$refs.spectrogram);
     },
     handlePlayButton: function () {
       if (normalizedAudioBuffer == null) {
