@@ -1,11 +1,13 @@
 <template>
   <div id="app">
     <openButton />
+    <mock-post-button />
   </div>
 </template>
 
 <script>
 import openButton from './components/openButton.vue';
+import mockPostButton from './components/mockPostButton.vue';
 import io from 'socket.io-client';
 
 const socketServerPort = new URL(document.location).searchParams.get('port');
@@ -36,7 +38,8 @@ socket.on("disconnect", ()=>{
 export default {
   name: 'app',
   components: {
-    openButton
+    openButton,
+    mockPostButton
   }
 }
 </script>
