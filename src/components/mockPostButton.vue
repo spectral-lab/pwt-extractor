@@ -9,7 +9,7 @@ export default {
       console.log('post');
       const img = await fetch('./mockSpectrogram.png')
       const ab = await img.arrayBuffer();
-      const res = await fetch('http://localhost:5000', {
+      const res = await fetch('http://54.238.234.108:5000', {
         method: 'POST',
         body: ab,
         mode: 'cors'
