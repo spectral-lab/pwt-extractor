@@ -37,7 +37,7 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => {
     rect.width = canvas.width * win.size / numberOfSamples * 0.001;
     rect.height = canvas.height / numberOfRows * 0.001;
     win.spectrum.forEach((amp, rowIdx) => {
-      rect.center.y = canvas.height * rowIdx /numberOfRows;
+      rect.center.y = canvas.height * (numberOfRows - 1 - rowIdx) /numberOfRows;
       ctx.fillStyle = 
         'rgb(' + 
         SPECTROGRAM_COLOR.r * amp + ', ' +  
