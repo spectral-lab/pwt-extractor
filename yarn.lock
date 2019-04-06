@@ -2882,6 +2882,18 @@ dotenv@^6.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
   integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
 
+dsp.js-browser@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/dsp.js-browser/-/dsp.js-browser-1.0.1.tgz#b8a2c46e071a5b07d619dc73e7254ab2d886b016"
+  integrity sha512-DkLJ9N4whNx+OLtT91rzAzSQDUU6GJ4TqLhnpNwM63/tsJIpxl35/Muvvz/1a6E1RzNMa4SbPal+3CEzKeqelQ==
+  dependencies:
+    dsp.js "^1.0.1"
+
+dsp.js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/dsp.js/-/dsp.js-1.0.1.tgz#02554a223ee514cd0e226cb6fb88d6d0b3e91308"
+  integrity sha1-AlVKIj7lFM0OImy2+4jW0LPpEwg=
+
 dup@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dup/-/dup-1.0.0.tgz#51fc5ac685f8196469df0b905e934b20af5b4029"
