@@ -16,8 +16,8 @@
 <script>
 import { sumToMono, normalize, crop, resample } from '../modules/audioBufferProcess'
 import { waveform, spectrogram } from '../modules/plot'
-// import { normalize2d } from '../modules/utils'
 
+const windowSize = 2048;
 const context = new AudioContext({latencyHint: 'interactive', sampleRate: 20500});
 let normalizedAudioBuffer;
 
@@ -45,7 +45,7 @@ export default {
       normalizedAudioBuffer = normalize(croppedAudioBuffer);
       const resampleEvent = await resample(normalizedAudioBuffer, DESIRED_SAMPLE_RATE);
       const resampledAudioBuffer = resampleEvent.renderedBuffer;
-      spectrogram(resampledAudioBuffer, this.$refs.spectrogram);
+      spectrogram(resampledAudioBuffer, this.$refs.spectrogram, windowSize, DESIRED_SAMPLE_RATE);
       waveform(resampledAudioBuffer, this.$refs.waveform);
     },
     handlePlayButton: function () {
