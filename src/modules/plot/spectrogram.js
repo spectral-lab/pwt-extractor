@@ -1,5 +1,6 @@
 import { FFT, WindowFunction } from 'dsp.js-browser';
 import gainToDecibels from 'decibels/from-gain';
+import { ftom } from '../utils';
 
 /**
  * Calculate FFT on audio buffer and plot a spectrogram on canvas element.
@@ -7,6 +8,7 @@ import gainToDecibels from 'decibels/from-gain';
  * @param  {HTMLCanvasElement} canvas
  * @param  {number} _windowSize In number of samples. This will be replaced with the nearest power of 2
  * @param  {number} sr Sampling rate of audio buffer. Integer
+ * @return {{freqs: Array.<number>, amp2d: Array.<Array<number>>}} freqs is frequency in Hz from low to high.
  */
 const spectrogram = (audioBuffer, canvas, _windowSize, sr) => {
   const win = {};
@@ -23,8 +25,15 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => {
   win.getCenterSampleIdx = windowIdx => win.size/2 + windowIdx*stepSize;
   const windowFunction = new WindowFunction(7); // "7" corresponds to HANN window 
   const fft = new FFT(win.size, sr);
-  const getFreqs = (windowSize, fft) => {
+
+  /**
+   * @param  {number} windowSize Integer
+   * @param  { FFT } fft instance of FFT class of dsp.js 
+   * @return { Array.<Number> } An array of center frequencies of each frequency bin.
+   */
+  const getCenterFreqs = (windowSize, fft) => {
     const numberOfFrequencyBins = windowSize / 2;
+    // @ts-ignore
     const freqs = Array.from({ length: numberOfFrequencyBins }, (_, i) => i).map(i => fft.getBandFrequency(i));
     return freqs;
   }
@@ -37,6 +46,14 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => {
     b: 0
   }
 
+  // calculate Y position of each row
+  const freqs = getCenterFreqs(win.size, fft);
+  const midiNoteNums = freqs.map(freq => ftom(freq));
+  const highestNote = midiNoteNums[midiNoteNums.length - 1];
+  const lowestNote = midiNoteNums[0];
+  const rowPositions = midiNoteNums.map(noteNum => (highestNote - noteNum) / (highestNote - lowestNote));
+  
+  const result = {freqs, amp2d: [[]]}
   let i = 0; 
 
   const plotColumn = () => {
@@ -50,13 +67,21 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => {
     // Plot rectangles
     const numberOfSamples = originalFloatArray.length;
     const numberOfRows = win.spectrum.length;
-    const rect = {}
-    rect.center = {}
-    rect.center.x = canvas.width * win.getCenterSampleIdx(i) / numberOfSamples;
-    rect.width = canvas.width * win.size / numberOfSamples;
-    rect.height = canvas.height / numberOfRows;
     win.spectrum.forEach((amp, rowIdx) => {
-      rect.center.y = canvas.height * (numberOfRows - 1 - rowIdx) /numberOfRows;
+      const rect = {}
+      rect.center = {}
+      rect.center.x = canvas.width * win.getCenterSampleIdx(i) / numberOfSamples;
+      rect.center.y = canvas.height * rowPositions[rowIdx];
+      rect.isLowestRect = rowIdx === 0;
+      rect.isUpmostRect = rowIdx === numberOfRows.length - 1
+      const oneLowerRectCenterY = rect.isLowestRect ? canvas.height : canvas.height * rowPositions[rowIdx - 1];
+      const oneUpperRectCenterY = rect.isUpmostRect ? 0 : canvas.height * rowPositions[rowIdx + 1];
+      rect.lowerEdge = {};
+      rect.upperEdge = {};
+      rect.lowerEdge.y = (oneLowerRectCenterY + rect.center.y) / 2;
+      rect.upperEdge.y = (oneUpperRectCenterY + rect.center.y) / 2;
+      rect.width = canvas.width * win.size / numberOfSamples;
+      rect.height = rect.lowerEdge.y - rect.upperEdge.y;
       const blackThreshold = -78 // in dB
       const luminance = ( Math.max(gainToDecibels(amp) , blackThreshold) + Math.abs(blackThreshold) ) / Math.abs(blackThreshold);
       ctx.fillStyle = 
@@ -66,7 +91,7 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => {
         SPECTROGRAM_COLOR.b * luminance + ')';
       ctx.fillRect(
         rect.center.x - rect.width / 2, 
-        rect.center.y - rect.height / 2, 
+        rect.upperEdge.y, 
         rect.width,
         rect.height
       );
@@ -76,8 +101,8 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => {
       window.requestAnimationFrame(plotColumn);
     }
   }
-
-  console.log(getFreqs(win.size, fft));
   window.requestAnimationFrame(plotColumn);
+
+  return result;
 }
 export default spectrogram;
