@@ -1,5 +1,15 @@
-// subfunction to plot waveform
+/**
+ * subfunction to plot waveform
+ * @param  {AudioBuffer} audioBuffer
+ * @param  {HTMLCanvasElement} canvas
+ */
 const waveform = (audioBuffer, canvas) => {
+  /**
+   * subfunction to thin out array by picking up items with a fixed interval.
+   * @param  {Array} array
+   * @param  {number} DESIRED_LENGTH Integer
+   * @return {Array}
+   */
   const thinOutArray = (array, DESIRED_LENGTH) => {
     const denominator = Math.max(1, Math.ceil(array.length / DESIRED_LENGTH));
     const thinArray = [];

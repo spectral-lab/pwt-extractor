@@ -1,4 +1,9 @@
-// crop audio buffer into desired duration
+/**
+ * crop audio buffer into desired duration
+ * @param  {AudioBuffer} sourceAudioBuffer
+ * @param  {number} DESIRED_DURATION in second
+ * @return {AudioBuffer}
+ */
 const crop = (sourceAudioBuffer, DESIRED_DURATION) => {
   if (sourceAudioBuffer.duration < DESIRED_DURATION) {
     return sourceAudioBuffer

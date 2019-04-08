@@ -1,4 +1,8 @@
-// normalize gain of audio buffer
+/**
+ * normalize gain of audio buffer
+ * @param  {AudioBuffer} sourceAudioBuffer
+ * @return {AudioBuffer}
+*/
 const normalize = (sourceAudioBuffer) => {
   let max = 0
   for (let channel = 0; channel < sourceAudioBuffer.numberOfChannels; channel++) {
