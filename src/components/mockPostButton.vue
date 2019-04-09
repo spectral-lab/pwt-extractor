@@ -21,7 +21,7 @@ export default {
         depth: 8,
         channels: 1
       })
-      const res = await fetch('http://54.238.234.108:5000', {
+      const res = await fetch('https://54.238.234.108:5000', {
         method: 'POST',
         body: img.buffer,
         mode: 'cors'
