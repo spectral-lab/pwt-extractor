@@ -1,9 +1,15 @@
 <template>
-  <button @click="postImage">post</button>
+  <div>
+    <!-- <h2>the result of stft: {{ stftData }}</h2> -->
+    <button @click="postImage">post</button>
+  </div>
 </template>
 
 <script>
 export default {
+  props: {
+    resultOfSTFT: {times: Array, freqs: Array, magnitude2d: Array }
+  },
   methods: {
     async postImage(){
       console.log('post');
