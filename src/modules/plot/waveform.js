@@ -6,7 +6,7 @@
 const waveform = (audioBuffer, canvas) => {
   /**
    * subfunction to thin out array by picking up items with a fixed interval.
-   * @param  {Array} array
+   * @param  {Float32Array | Array} array
    * @param  {number} DESIRED_LENGTH Integer
    * @return {Array}
    */
