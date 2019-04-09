@@ -1,7 +1,10 @@
 import { mean } from 'lodash';
 
-// monauralize audio buffer which can have any number of channels
-
+/**
+ * monauralize audio buffer which can have any number of channels
+ * @param  {AudioBuffer} sourceAudioBuffer
+ * @return {AudioBuffer}
+ */
 const sumToMono = (sourceAudioBuffer) => {
   const channelDataArray = []
   for (let channel = 0; channel < sourceAudioBuffer.numberOfChannels; channel++) {
