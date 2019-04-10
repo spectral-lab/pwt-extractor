@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import formatAsPwt from '../modules/formatAsPwt';
+
 export default {
   methods: {
     async postImage(){
@@ -16,9 +18,12 @@ export default {
       })
       .then(d=> d.json())
       .catch(e => {
+        console.error(e)
         debugger;
       });
-      console.log(res);
+      
+      const pwt = formatAsPwt(ab, res);
+      debugger;
     }
   }
 }
