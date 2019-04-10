@@ -6,7 +6,9 @@
 </template>
 
 <script>
-import { encode } from 'fast-png'
+import { PNG } from 'pngjs';
+import gainToDecibels from 'decibels/from-gain';
+
 export default {
   props: {
     resultOfSTFT: {times: Array, freqs: Array, magnitude2d: Array }
@@ -14,16 +16,26 @@ export default {
   methods: {
     async postImage(){
       console.log('post');
-      const img = encode({
+      const png = new PNG({
         width: this.resultOfSTFT.magnitude2d[0].length,
         height: this.resultOfSTFT.magnitude2d.length,
-        data: this.resultOfSTFT.magnitude2d.flat(),
-        depth: 8,
-        channels: 1
-      })
-      const res = await fetch('https://54.238.234.108:5000', {
+        bitDepth: 8,
+        colorType: 0,
+        inputHasAlpha: false
+      });
+      const colors = this.resultOfSTFT.magnitude2d.flat().map(magnitude => {
+        const blackThreshold = -78 // in dB
+        const db = gainToDecibels(magnitude);
+        const filterLow = Math.max(db, blackThreshold);
+        const normalized = (filterLow + Math.abs(blackThreshold))  / Math.abs(blackThreshold)
+        const ret = Math.round(normalized * 255);
+        return ret;
+      });
+      png.data = colors;
+      const buff = PNG.sync.write(png);
+      const res = await fetch('http://localhost:5000', {
         method: 'POST',
-        body: img.buffer,
+        body: buff,
         mode: 'cors'
       })
       .then(d=> d.json())

@@ -44,11 +44,6 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
   }
   // Set up Canvas
   const ctx = canvas.getContext('2d');
-  const SPECTROGRAM_COLOR = {
-    R: 255,
-    G: 255,
-    B: 0
-  }
 
   // calculate Y position of each row
   const freqs = getCenterFreqs(win.size, fft);
@@ -101,11 +96,9 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
       };
       rect.width = canvas.width * win.size / numberOfSamples;
       rect.height = rect.lowerEdge.y - rect.upperEdge.y;
-      ctx.fillStyle = 
-        'rgb(' + 
-        SPECTROGRAM_COLOR.R * rect.luminance + ', ' +  
-        SPECTROGRAM_COLOR.G * rect.luminance + ', ' +  
-        SPECTROGRAM_COLOR.B * rect.luminance + ')';
+      const HUE = 120;
+      ctx.fillStyle = `hsl(${HUE},20%,${rect.luminance * 100}%)`
+        
       ctx.fillRect(
         rect.center.x - rect.width / 2, 
         rect.upperEdge.y, 
