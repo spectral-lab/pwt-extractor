@@ -16,6 +16,7 @@
     "ndarray-ops": "^1.2.2",
     "ndarray-pack": "^1.2.1",
     "ndarray-unpack": "^1.0.0",
+    "pngjs": "^3.4.0",
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.6"
   },
