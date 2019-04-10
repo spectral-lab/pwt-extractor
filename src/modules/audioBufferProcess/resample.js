@@ -1,4 +1,9 @@
-// subfunction to resample audio buffer
+/**
+ * subfunction to resample audio buffer
+ * @param  {AudioBuffer} sourceAudioBuffer
+ * @param  {number} DESIRED_SAMPLE_RATE
+ * @return {Promise.<Event>}
+ */
 const resample = (sourceAudioBuffer, DESIRED_SAMPLE_RATE) => {
   return new Promise ((resolve) => {
     const offlineCtx = new OfflineAudioContext(sourceAudioBuffer.numberOfChannels, sourceAudioBuffer.duration * DESIRED_SAMPLE_RATE, DESIRED_SAMPLE_RATE);

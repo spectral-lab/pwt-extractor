@@ -1,13 +1,15 @@
 <template>
   <div id="app">
-    <openButton />
-    <mock-post-button />
+    <OpenButton v-on:stft-completed="resultOfSTFT=$event" v-on:audio-is-ready="sourceAudioBuffer=$event"  />
+    <PlayButton :sourceAudioBuffer="sourceAudioBuffer" />
+    <Mock-post-button :resultOfSTFT="resultOfSTFT" />
   </div>
 </template>
 
 <script>
-import openButton from './components/openButton.vue';
-import mockPostButton from './components/mockPostButton.vue';
+import OpenButton from './components/OpenButton.vue';
+import PlayButton from './components/PlayButton.vue';
+import MockPostButton from './components/MockPostButton.vue';
 import io from 'socket.io-client';
 
 const socketServerPort = new URL(document.location).searchParams.get('port');
@@ -19,7 +21,7 @@ socket.on("connect", () => {
        "0":[60.3, 60.5, 58.9],
        "1":[90.5, 89.3, 82.2]
    },
-   "amp":{
+   "magnitude":{
        "0":[0.1, 0.3, 0.4],
        "1":[0.5, 0.2, 0.1]
    }
@@ -38,9 +40,24 @@ socket.on("disconnect", ()=>{
 export default {
   name: 'app',
   components: {
-    openButton,
-    mockPostButton
-  }
+    OpenButton,
+    PlayButton,
+    MockPostButton
+  },
+  data () {
+    return {
+      sourceAudioBuffer: new AudioBuffer({
+        length: 1, 
+        numberOfChannels: 1, 
+        sampleRate: 22050
+      }),
+      resultOfSTFT: {
+        times: [],
+        freqs: [],
+        magnitude2d: []
+      }
+    }
+  },
 }
 </script>
 

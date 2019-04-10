@@ -3,26 +3,17 @@
     <input v-on:change="handleChange" ref="soundfiles" type="file" id="soundupload" accept="audio/*" />
     <div>
       <canvas ref="waveform" width="800" height="300">waveform</canvas>
+      <canvas ref="spectrogram" width="800" height="300">spectrogram</canvas>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <g>
-        <image v-on:click="handlePlayButton" x="0" y="0" width="50px" height="50px" xlink:href="../assets/play.svg" />
-      </g>
-    </svg>
   </div>
 </template>
 
 <script>
 import { sumToMono, normalize, crop, resample } from '../modules/audioBufferProcess'
-import { waveform } from '../modules/plot'
-import { normalize2d } from '../modules/utils'
-import mockSpectrogram from '../../test/assets/mockSpectrogram.json'
-
-const context = new AudioContext({latencyHint: 'interactive', sampleRate: 20500});
-let normalizedAudioBuffer;
+import { waveform, spectrogram } from '../modules/plot'
 
 export default {
-  name: 'openButton',
+  name: 'OpenButton',
   methods: {
     handleChange: async function () {
       // subfunction
@@ -35,6 +26,8 @@ export default {
       }
       
       // Main
+      const windowSize = 1987;
+      const context = new AudioContext({latencyHint: 'interactive', sampleRate: 22050});
       const f = this.$refs.soundfiles.files[0];
       const DESIRED_DURATION = 10; //in seconds.
       const DESIRED_SAMPLE_RATE = 22050;
@@ -42,21 +35,13 @@ export default {
       const originalAudioBuffer = await context.decodeAudioData(loadEvent.target.result);
       const monoAudioBuffer = sumToMono(originalAudioBuffer);
       const croppedAudioBuffer = crop(monoAudioBuffer , DESIRED_DURATION);
-      normalizedAudioBuffer = normalize(croppedAudioBuffer);
+      const normalizedAudioBuffer = normalize(croppedAudioBuffer);
+      this.$emit('audio-is-ready', normalizedAudioBuffer);
       const resampleEvent = await resample(normalizedAudioBuffer, DESIRED_SAMPLE_RATE);
       const resampledAudioBuffer = resampleEvent.renderedBuffer;
       waveform(resampledAudioBuffer, this.$refs.waveform);
-      const normalizedAmp2d = normalize2d(mockSpectrogram.spectrogram);
-      // spectrogram(normalizedAmp2d, this.$refs.spectrogram);
-    },
-    handlePlayButton: function () {
-      if (normalizedAudioBuffer == null) {
-        return;
-      }
-      const source = context.createBufferSource(); // creates a sound source
-      source.buffer = normalizedAudioBuffer;                    // tell the source which sound to play
-      source.connect(context.destination);       // connect the source to the context's destination (the speakers)
-      source.start(0);
+      const resultOfSTFT = await spectrogram(resampledAudioBuffer, this.$refs.spectrogram, windowSize, DESIRED_SAMPLE_RATE);
+      this.$emit('stft-completed', resultOfSTFT);
     }
   }
 }
