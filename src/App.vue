@@ -61,7 +61,9 @@ export default {
       playAudioBuffer(this.sourceAudioBuffer)
     },
     sendPwt(pwt){
-      socket.emit('pwt', pwt)
+      socket.emit('pwt', pwt);
+      console.log('sent pwt');
+      console.log(pwt);
     }
   }
 }
