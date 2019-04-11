@@ -1,12 +1,13 @@
-import { decode } from 'fast-png';
-import ndarray from 'ndarray';
 import { cloneDeep } from 'lodash';
 
-const formatAsPwt = (ab, res) => {
-  const decoded = decode(ab);
-  const amps = new Float32Array(decoded.data).map(x => x / 255.);
-  const amp2d = ndarray(amps, [decoded.height, decoded.width])
-  const restoredPartials = res.map((partialPositions, idx) => {
+/**
+ * @param {Object} resultOfSTFT 
+ * @param {Array.<Array.<Array.<Number>>>} arrayOfPartialPositions partialPositions is array of [x, y] pair 
+ */
+const formatAsPwt = (resultOfSTFT, arrayOfPartialPositions) => {
+  const magnitude2d = resultOfSTFT.magnitude2d;
+  const freqs = resultOfSTFT.freqs;
+  const restoredPartials = arrayOfPartialPositions.map((partialPositions, idx) => {
     return {
       id: idx,
       startTimeIdx: partialPositions[0][1],
@@ -33,26 +34,25 @@ const formatAsPwt = (ab, res) => {
   }
   
   const partialsToConvert = partials.filter((_, idx) => idx < 15);
-  const freqs = Array(decoded.height).fill(440);
   
-  const initPitchArray = () => Array(decoded.width).fill(0);
-  const initAmpArray = () => Array(decoded.width).fill(0);
+  const initPitchArray = () => Array(magnitude2d[0].length).fill(0);
+  const initAmpArray = () => Array(magnitude2d[0].length).fill(0);
   const pwt = {
     pitch: {},
     amp: {}
-  }
+  };
 
-  partialsToConvert.forEach((partial, idx )=> {
+  partialsToConvert.forEach((partial, idx) => {
     const key = String(idx)
     pwt.pitch[key] = initPitchArray();
     pwt.amp[key] = initAmpArray();
     partial.points.forEach((point) => {
       const row = point[0]
       const column = point[1]
-      pwt.amp[key][column] = amp2d.get(row, column);
+      pwt.amp[key][column] = magnitude2d[row][column];
       pwt.pitch[key][column] = freqs[row];
     })
-  })
+  });
 
   return pwt;
 }

@@ -7,6 +7,7 @@
 
 <script>
 import { PNG } from 'pngjs';
+import formatAsPwt from '../modules/formatAsPwt';
 import gainToDecibels from 'decibels/from-gain';
 
 export default {
@@ -39,10 +40,11 @@ export default {
         mode: 'cors'
       })
       .then(d=> d.json())
+      .then(arrayofPartialPositions=>formatAsPwt(this.resultOfSTFT,arrayofPartialPositions))
       .catch(e => {
         debugger;
       });
-      console.log(res);
+      this.$attrs.sendPwt(res);
     }
   }
 }
