@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     plot: async function (audioBuffer) {
-      console.log(audioBuffer.length);
       const DESIRED_SAMPLE_RATE = 22050;
       const windowSize = 1987;
       const resampleEvent = await resample(audioBuffer, DESIRED_SAMPLE_RATE);
