@@ -1,2 +1,2 @@
-export const RECEIVE_PWT = "RECEIVE_PWT";
+export const RECEIVED_PWT = "RECEIVED_PWT";
 export const RENDER_VIEWER = "RENDER_VIEWER";

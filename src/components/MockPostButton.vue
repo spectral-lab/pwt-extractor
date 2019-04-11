@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <h2>the result of stft: {{ stftData }}</h2> -->
     <button @click="postImage">post</button>
   </div>
 </template>
@@ -9,22 +8,20 @@
 import { PNG } from 'pngjs';
 import formatAsPwt from '../utils/formatAsPwt';
 import gainToDecibels from 'decibels/from-gain';
+import { RECEIVED_PWT } from '../constants/events';
 
 export default {
-  props: {
-    resultOfSTFT: {times: Array, freqs: Array, magnitude2d: Array }
-  },
   methods: {
-    async postImage(){
-      console.log('post');
+    postImage(){
+      const { spectrogram } = this.$store.state;
       const png = new PNG({
-        width: this.resultOfSTFT.magnitude2d[0].length,
-        height: this.resultOfSTFT.magnitude2d.length,
+        width: spectrogram.magnitude2d[0].length,
+        height: spectrogram.magnitude2d.length,
         bitDepth: 8,
         colorType: 0,
         inputHasAlpha: false
       });
-      const colors = this.resultOfSTFT.magnitude2d.flat().map(magnitude => {
+      const colors = spectrogram.magnitude2d.flat().map(magnitude => {
         const blackThreshold = -78 // in dB
         const db = gainToDecibels(magnitude);
         const filterLow = Math.max(db, blackThreshold);
@@ -34,19 +31,20 @@ export default {
       });
       png.data = colors;
       const buff = PNG.sync.write(png);
-      const res = await fetch('http://localhost:5000', {
+      fetch('http://localhost:5000', {
         method: 'POST',
         body: buff,
         mode: 'cors'
       })
       .then(d => d.json())
-      .catch(e => {
-        console.log(e);
-      });
-      const arrayOfPartialPositions = res;
-      formatAsPwt(this.resultOfSTFT, arrayOfPartialPositions);
-      this.$eventHub.$emit('partials-are-ready', arrayOfPartialPositions);
-      this.$attrs.sendPwt(res);
+      .then(arrayOfPartialPositions => {
+        // this.$eventHub.$emit();
+        return formatAsPwt(spectrogram, arrayOfPartialPositions);
+      })
+      .then(pwt => {
+        this.$eventHub.$emit(RECEIVED_PWT, pwt);
+      })
+      .catch(console.error);
     }
   }
 }

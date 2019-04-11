@@ -3,7 +3,7 @@
     <OpenButton />
     <Viewer />
     <PlayButton />
-    <!-- <Mock-post-button :resultOfSTFT="resultOfSTFT" :sendPwt="sendPwt" /> -->
+    <Mock-post-button />
   </div>
 </template>
 

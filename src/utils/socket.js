@@ -1,7 +1,7 @@
 // @ts-nocheck
 import io from 'socket.io-client';
 import eventHub from './eventHub';
-import { RECEIVE_PWT } from '../constants/events';
+import { RECEIVED_PWT } from '../constants/events';
 
 const socketServerPort = new URL(document.location).searchParams.get('port');
 const socket = io(`http://localhost:${socketServerPort}`);
@@ -20,7 +20,7 @@ socket.on("disconnect", ()=>{
   window.close();
 });
 
-eventHub.$on(RECEIVE_PWT, pwt => {
+eventHub.$on(RECEIVED_PWT, pwt => {
   socket.emit('pwt', pwt);
   console.log('sent pwt');
   console.log(pwt);
