@@ -1,6 +1,6 @@
-import waveform from './waveform';
-import spectrogram from './spectrogram';
+import renderWaveform from './waveform';
+import renderSpectrogram from './spectrogram';
 export {
-  waveform,
-  spectrogram
+  renderWaveform,
+  renderSpectrogram
 }
