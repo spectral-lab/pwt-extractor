@@ -2,6 +2,7 @@
   <div class=viewer>
       <canvas ref="waveform" width="800" height="300">waveform</canvas>
       <canvas ref="spectrogram" width="800" height="300">spectrogram</canvas>
+      <canvas ref="partials" width="800" height="300">spectrogram</canvas>
     </div>
 </template>
 
@@ -11,14 +12,12 @@ import { waveform, spectrogram } from '../modules/plot'
 
 export default {
   name: 'Viewer',
-  props: {
-    sourceAudioBuffer: AudioBuffer
-  },
   created() {
-    this.$eventHub.$on('audio-is-ready', this.plot);
+    this.$eventHub.$on('audio-is-ready', this.plotWaveformAndSpectrogram);
+    this.$eventHub.$on('partials-are-ready', this.plotPartials);
   },
   methods: {
-    plot: async function (audioBuffer) {
+    async plotWaveformAndSpectrogram(audioBuffer) {
       const DESIRED_SAMPLE_RATE = 22050;
       const windowSize = 1987;
       const resampleEvent = await resample(audioBuffer, DESIRED_SAMPLE_RATE);
@@ -26,6 +25,11 @@ export default {
       waveform(resampledAudioBuffer, this.$refs.waveform);
       const resultOfSTFT = await spectrogram(resampledAudioBuffer, this.$refs.spectrogram, windowSize, DESIRED_SAMPLE_RATE);
       this.$emit('stft-completed', resultOfSTFT);
+    },
+    plotPartials(arrayofPartialPositions) {
+      // Work In Progress
+      console.log(arrayofPartialPositions);
+      debugger;
     }
   }
 }

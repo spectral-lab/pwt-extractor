@@ -39,11 +39,13 @@ export default {
         body: buff,
         mode: 'cors'
       })
-      .then(d=> d.json())
-      .then(arrayofPartialPositions=>formatAsPwt(this.resultOfSTFT,arrayofPartialPositions))
+      .then(d => d.json())
       .catch(e => {
-        debugger;
+        console.log(e);
       });
+      const arrayOfPartialPositions = res;
+      formatAsPwt(this.resultOfSTFT, arrayOfPartialPositions);
+      this.$eventHub.$emit('partials-are-ready', arrayOfPartialPositions);
       this.$attrs.sendPwt(res);
     }
   }
