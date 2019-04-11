@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { sumToMono, normalize, crop } from '../modules/audioBufferProcess'
+import { sumToMono, normalize, crop } from '../utils/audio'
 
 export default {
   name: 'OpenButton',

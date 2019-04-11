@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import { resample } from '../modules/audioBufferProcess'
-import { waveform, spectrogram } from '../modules/plot'
+import { resample } from '../utils/audio'
+import { waveform, spectrogram } from '../utils/plot'
 
 export default {
   name: 'Viewer',

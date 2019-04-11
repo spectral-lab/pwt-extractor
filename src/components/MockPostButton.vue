@@ -7,7 +7,7 @@
 
 <script>
 import { PNG } from 'pngjs';
-import formatAsPwt from '../modules/formatAsPwt';
+import formatAsPwt from '../utils/formatAsPwt';
 import gainToDecibels from 'decibels/from-gain';
 
 export default {

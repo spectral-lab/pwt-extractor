@@ -1,6 +1,6 @@
 import { FFT, WindowFunction } from 'dsp.js-browser';
 import gainToDecibels from 'decibels/from-gain';
-import { ftom } from '../utils';
+import { ftom } from '../helpers';
 import packIntoNdarray from 'ndarray-pack';
 import unpackFromNdArray from 'ndarray-unpack'
 

@@ -9,25 +9,11 @@
 
 <script>
 import OpenButton from './components/OpenButton.vue';
+import "./utils/socket";
 import PlayButton from './components/PlayButton.vue';
 import MockPostButton from './components/MockPostButton.vue';
 import Viewer from './components/Viewer.vue';
-import { playAudioBuffer } from './modules/utils';
-import io from 'socket.io-client';
-
-const socketServerPort = new URL(document.location).searchParams.get('port');
-const socket = io(`http://localhost:${socketServerPort}`);
-socket.on("connect", () => {
-  console.log(`connected with your M4L! at ${socketServerPort}`);
-});
-socket.on("broadcast", msg=>{
-  if(msg === 'CLOSE'){
-    window.close();
-  }
-});
-socket.on("disconnect", ()=>{
-  window.close();
-});
+import { playAudioBuffer } from './utils/helpers';
 
 export default {
   name: 'app',
