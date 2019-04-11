@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import { ftom } from './utils';
 
 /**
  * @param {Object} resultOfSTFT 
@@ -6,7 +7,7 @@ import { cloneDeep } from 'lodash';
  */
 const formatAsPwt = (resultOfSTFT, arrayOfPartialPositions) => {
   const magnitude2d = resultOfSTFT.magnitude2d;
-  const freqs = resultOfSTFT.freqs;
+  const notes = resultOfSTFT.freqs.map(freq => ftom(freq));
   const restoredPartials = arrayOfPartialPositions.map((partialPositions, idx) => {
     return {
       id: idx,
@@ -50,7 +51,7 @@ const formatAsPwt = (resultOfSTFT, arrayOfPartialPositions) => {
       const row = point[0]
       const column = point[1]
       pwt.amp[key][column] = magnitude2d[row][column];
-      pwt.pitch[key][column] = freqs[row];
+      pwt.pitch[key][column] = notes[row];
     })
   });
 
