@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <OpenButton v-on:stft-completed="resultOfSTFT=$event" v-on:audio-is-ready="sourceAudioBuffer=$event"  />
-    <PlayButton :sourceAudioBuffer="sourceAudioBuffer" />
+    <OpenButton v-on:set-audio-buffer="sourceAudioBuffer=$event" />
+    <Viewer :sourceAudioBuffer="sourceAudioBuffer" v-on:stft-completed="resultOfSTFT=$event" />
+    <PlayButton :playAudioBuffer="playAudioBuffer" />
     <Mock-post-button :resultOfSTFT="resultOfSTFT" :sendPwt="sendPwt" />
   </div>
 </template>
@@ -10,6 +11,8 @@
 import OpenButton from './components/OpenButton.vue';
 import PlayButton from './components/PlayButton.vue';
 import MockPostButton from './components/MockPostButton.vue';
+import Viewer from './components/Viewer.vue';
+import { playAudioBuffer } from './modules/utils';
 import io from 'socket.io-client';
 
 const socketServerPort = new URL(document.location).searchParams.get('port');
@@ -31,7 +34,8 @@ export default {
   components: {
     OpenButton,
     PlayButton,
-    MockPostButton
+    MockPostButton,
+    Viewer
   },
   data () {
     return {
@@ -47,9 +51,17 @@ export default {
       }
     }
   },
-  methods: {
+  watch: {
+    sourceAudioBuffer: function(newBuffer) {
+      this.$eventHub.$emit('audio-is-ready', newBuffer);
+    }
+  },
+  methods: { 
+    playAudioBuffer(){
+      playAudioBuffer(this.sourceAudioBuffer)
+    },
     sendPwt(pwt){
-      socket.emit('pwt', pwt);
+      socket.emit('pwt', pwt)
     }
   }
 }
