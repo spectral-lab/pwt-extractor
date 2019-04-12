@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { ftom } from './helpers';
+import { ftom } from '.';
 
 /**
  * @param {Object} resultOfSTFT 

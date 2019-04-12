@@ -6,7 +6,7 @@
 
 <script>
 import { PNG } from 'pngjs';
-import formatAsPwt from '../utils/formatAsPwt';
+import formatAsPwt from '../utils/helpers/formatAsPwt';
 import gainToDecibels from 'decibels/from-gain';
 import { RECEIVED_PWT, RENDER_PEAK_LINES } from '../constants/events';
 
