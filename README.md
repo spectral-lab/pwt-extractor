@@ -4,8 +4,12 @@
 See [here](https://docs.google.com/presentation/d/1ymAdCnPOHE0zmWonx3Z4-dZTxSzDACBRHViL6W8dvDw/edit#slide=id.p).
 
 ## Project setup
+Add [Google Drive Folder](https://drive.google.com/drive/folders/1cS5Yh_jSzTZflyemhilMIpme3mjuSPeY?usp=sharing) to MyDrive
+
 ```
 yarn install
+// make symlink
+ln -s path/to/mock/folder/in/your/google/drive ./test/mock
 ```
 
 ### Compiles and hot-reloads for development
