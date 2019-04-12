@@ -9,6 +9,7 @@ import { PNG } from 'pngjs';
 import formatAsPwt from '../utils/helpers/formatAsPwt';
 import gainToDecibels from 'decibels/from-gain';
 import { RECEIVED_PWT, RENDER_PEAK_LINES } from '../constants/events';
+import { Line } from '../classes';
 
 export default {
   methods: {
@@ -37,9 +38,15 @@ export default {
         mode: 'cors'
       })
       .then(d => d.json())
-      .then(arrayOfPartialPositions => {
-        this.$eventHub.$emit(RENDER_PEAK_LINES, arrayOfPartialPositions);
-        return formatAsPwt(spectrogram, arrayOfPartialPositions);
+      .then(_detectedPeakPoints => {
+        /**
+         * All points detected as peak. Array is splited into chunks. Each chunk corresponds to each line.
+         * @type {Array.<Array.<Array.<Number>>>} 
+         */
+        const detectedPeakPoints = _detectedPeakPoints;
+        this.$eventHub.$emit(RENDER_PEAK_LINES, detectedPeakPoints);
+        const lines = detectedPeakPoints.map((pointsInOneLine, idx) => new Line(pointsInOneLine, idx));
+        return formatAsPwt(spectrogram, lines);
       })
       .then(pwt => {
         this.$eventHub.$emit(RECEIVED_PWT, pwt);
