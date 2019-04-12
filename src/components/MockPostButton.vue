@@ -8,7 +8,7 @@
 import { PNG } from 'pngjs';
 import formatAsPwt from '../utils/formatAsPwt';
 import gainToDecibels from 'decibels/from-gain';
-import { RECEIVED_PWT } from '../constants/events';
+import { RECEIVED_PWT, RENDER_PEAK_LINES } from '../constants/events';
 
 export default {
   methods: {
@@ -38,7 +38,7 @@ export default {
       })
       .then(d => d.json())
       .then(arrayOfPartialPositions => {
-        // this.$eventHub.$emit();
+        this.$eventHub.$emit(RENDER_PEAK_LINES, arrayOfPartialPositions);
         return formatAsPwt(spectrogram, arrayOfPartialPositions);
       })
       .then(pwt => {

@@ -13,7 +13,6 @@ export default {
   name: 'OpenButton',
   methods: {
     handleChange: async function () {
-      // Main
       const context = new AudioContext({latencyHint: 'interactive', sampleRate: 22050});
       const f = this.$refs.soundfiles.files[0];
       const DESIRED_DURATION = 10; //in seconds.

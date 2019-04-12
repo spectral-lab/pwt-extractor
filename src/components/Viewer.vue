@@ -9,13 +9,13 @@
 <script>
 import { resample } from '../utils/audio'
 import { renderWaveform, renderSpectrogram } from '../utils/plot'
-import { RENDER_VIEWER } from '../constants/events';
+import { RENDER_VIEWER, RENDER_PEAK_LINES } from '../constants/events';
 import { SET_SPECTROGRAM } from '../constants/mutation-types';
 
 export default {
   created() {
     this.$eventHub.$on(RENDER_VIEWER, this.plotWaveformAndSpectrogram);
-    // this.$eventHub.$on("", this.plotPartials);
+    this.$eventHub.$on(RENDER_PEAK_LINES, this.plotPartials);
   },
   methods: {
     async plotWaveformAndSpectrogram() {
@@ -33,7 +33,7 @@ export default {
     },
     plotPartials(arrayofPartialPositions) {
       // Work In Progress
-      console.log(arrayofPartialPositions);
+      console.log("Partial Viwer is under construction");
     }
   }
 }
