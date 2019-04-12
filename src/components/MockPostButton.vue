@@ -44,8 +44,8 @@ export default {
          * @type {Array.<Array.<Array.<Number>>>} 
          */
         const detectedPeakPoints = _detectedPeakPoints;
-        this.$eventHub.$emit(RENDER_PEAK_LINES, detectedPeakPoints);
         const peakLines = detectedPeakPoints.map((pointsInOneLine, idx) => new PeakLine(pointsInOneLine, idx));
+        this.$eventHub.$emit(RENDER_PEAK_LINES, peakLines);
         return formatAsPwt(spectrogram, peakLines);
       })
       .then(pwt => {

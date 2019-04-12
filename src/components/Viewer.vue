@@ -8,6 +8,7 @@
 
 <script>
 import { resample } from '../utils/audio'
+import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram } from '../utils/plot'
 import { RENDER_VIEWER, RENDER_PEAK_LINES } from '../constants/events';
 import { SET_SPECTROGRAM } from '../constants/mutation-types';
@@ -31,7 +32,8 @@ export default {
         spectrogram
       });
     },
-    plotPartials(arrayofPartialPositions) {
+    /** @param {Array.<PeakLine>} peakLines */
+    plotPartials(peakLines) {
       // Work In Progress
       console.log("Partial Viwer is under construction");
     }
