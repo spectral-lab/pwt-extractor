@@ -1,8 +1,8 @@
 /** Class representing a line which contains points detected as peak. */
-class Line {
+class PeakLine {
   /**
-   * @param {Array.<Array.<number>>} points - Points to be the line. Each point is a pair of [row, column]
-   * @param {number} id - line id.
+   * @param {Array.<Array.<number>>} points - Points in the Peak Line. Each point is a pair of [row, column]
+   * @param {number} id - id.
    */
   constructor(points, id) {
     const firstPoint = points[0];
@@ -15,4 +15,4 @@ class Line {
   }
 }
 
-export default Line;
+export default PeakLine;

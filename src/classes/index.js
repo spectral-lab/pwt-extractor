@@ -1,7 +1,7 @@
-import Line from './Line';
+import PeakLine from './PeakLine';
 import PWTConverter from './PWTConverter';
 
 export {
-  Line,
+  PeakLine,
   PWTConverter
 };

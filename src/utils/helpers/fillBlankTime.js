@@ -1,8 +1,8 @@
 import { cloneDeep } from 'lodash';
-import { Line } from '../../classes';  // eslint-disable-line no-unused-vars
+import { PeakLine } from '../../classes';  // eslint-disable-line no-unused-vars
 
 /**
- * @param  {Array.<Line>} originalLines
+ * @param  {Array.<PeakLine>} originalLines
  */
 const fillBlankTime = (originalLines) => {
   const lines = cloneDeep(originalLines);

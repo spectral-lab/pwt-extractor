@@ -1,9 +1,9 @@
 import { fillBlankTime, } from '.';
-import { Line, PWTConverter } from '../../classes'; // eslint-disable-line no-unused-vars
+import { PeakLine, PWTConverter } from '../../classes'; // eslint-disable-line no-unused-vars
 
 /**
  * @param {Object} resultOfSTFT 
- * @param {Array.<Line>} lines
+ * @param {Array.<PeakLine>} lines
  */
 const formatAsPwt = (resultOfSTFT, lines) => {
   lines.sort((a, b) => a.startTimeIdx - b.startTimeIdx);

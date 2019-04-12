@@ -1,10 +1,10 @@
 import { ftom } from '../utils/helpers'
-import { Line } from '.'  // eslint-disable-line no-unused-vars
+import { PeakLine } from '.'  // eslint-disable-line no-unused-vars
 
 /** Class representing a PWT which is then to be sent to Ableton. */
 class PWTConverter {
   /**
-   * @param {Object} resultOfSTFT - Points to be the line. Each point is a pair of [row, column]
+   * @param {Object} resultOfSTFT
    */
   constructor(resultOfSTFT){   
     this.resultOfSTFT = resultOfSTFT;
@@ -19,7 +19,7 @@ class PWTConverter {
     }
   }
   /**
-   * @param {Array.<Line>} lines - Array of lines to be formatted as PWT
+   * @param {Array.<PeakLine>} lines - Array of lines to be formatted as PWT
    */
   gen(lines) {
     const notes = this.resultOfSTFT.freqs.map(freq => ftom(freq));
