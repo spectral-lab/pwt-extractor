@@ -2,7 +2,7 @@
   <div class=viewer>
       <canvas ref="waveform" width="800" height="300">waveform</canvas>
       <canvas ref="spectrogram" width="800" height="300">spectrogram</canvas>
-      <canvas ref="partials" width="800" height="300">spectrogram</canvas>
+      <canvas ref="peakLines" width="800" height="300">spectrogram</canvas>
     </div>
 </template>
 
@@ -16,7 +16,7 @@ import { SET_SPECTROGRAM } from '../constants/mutation-types';
 export default {
   created() {
     this.$eventHub.$on(RENDER_VIEWER, this.plotWaveformAndSpectrogram);
-    this.$eventHub.$on(RENDER_PEAK_LINES, this.plotPartials);
+    this.$eventHub.$on(RENDER_PEAK_LINES, this.plotPeakLines);
   },
   methods: {
     async plotWaveformAndSpectrogram() {
@@ -33,7 +33,7 @@ export default {
       });
     },
     /** @param {Array.<PeakLine>} peakLines */
-    plotPartials(peakLines) {
+    plotPeakLines(peakLines) {
       // Work In Progress
       console.log("Partial Viwer is under construction");
     }
