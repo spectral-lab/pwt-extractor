@@ -29,9 +29,10 @@ body {
   color: white;
   font-family: 'Roboto', sans-serif;
   text-align: center;
+  margin: 0;
 }
 #main {
-  margin: 30px;
+  margin: 64px 0;
   overflow-x: hidden; 
   overflow-y: auto;
 }

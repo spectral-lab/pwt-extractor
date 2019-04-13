@@ -1,10 +1,6 @@
 <template>
-  <div @click="handleClick" class="play-button">
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <g>
-        <image @click="handleClick" x="0" y="0" width="50px" height="50px" xlink:href="../assets/play.svg" />
-      </g>
-    </svg>
+  <div id="buttonContainer" @click="handleClick" class="play-button">
+    <img src="../assets/play.svg" alt="">
   </div>
 </template>
 
@@ -19,3 +15,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#buttonContainer {
+  height: 64px;
+}
+img {
+  height: 100%;
+}
+</style>

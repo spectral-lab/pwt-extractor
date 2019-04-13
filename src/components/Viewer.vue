@@ -14,7 +14,7 @@
     </div>
     <div id="utilities">
       <play-button />
-      <input type="range" min=0 v-model="viewerOpacity" max=100>
+      <slider v-model="viewerOpacity" />
     </div>
   </div>
 </template>
@@ -22,6 +22,7 @@
 <script>
 import PlayButton from './PlayButton.vue';
 import MockPostButton from './MockPostButton.vue';
+import Slider from './Slider.vue'
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram } from '../utils/plot'
@@ -75,6 +76,7 @@ export default {
   },
   components:{
     PlayButton,
+    Slider,
     MockPostButton
   }
 }
@@ -86,13 +88,13 @@ export default {
     margin: 0 auto;
     flex-direction: column;
     justify-content: center;
-    width: 70%;
+    /* width: 70%; */
     height: 100vh;
   }
   #viewerArea {
    position: relative;
    width: 100%;
-   height: 300px;
+   height: 420px;
    background: black;
   }
  .viewer-child-container {
@@ -108,6 +110,9 @@ export default {
    height: 100%;
  }
  #utilities {
+   margin: 32px;
    display: flex;
+   justify-content: space-between;
+   align-items: center;
  }
 </style>
