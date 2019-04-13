@@ -2,6 +2,7 @@
   "name": "pwt-extractor",
   "version": "0.1.0",
   "private": true,
+  "main": "server.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,6 +11,7 @@
   "dependencies": {
     "decibels": "^2.0.0",
     "dsp.js-browser": "^1.0.1",
+    "express": "^4.16.4",
     "lodash": "^4.17.11",
     "ndarray-normalize": "^1.0.0",
     "ndarray-ops": "^1.2.2",
