@@ -10,7 +10,6 @@ import { SET_AUDIO_BUFFER } from '../constants/mutation-types';
 import loadFileAsArrayBuffer from '../utils/helpers/loadFileAsArrayBuffer';
 
 export default {
-  name: 'OpenButton',
   methods: {
     handleChange: async function () {
       const context = new AudioContext({latencyHint: 'interactive', sampleRate: 22050});
