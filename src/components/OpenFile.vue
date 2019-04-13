@@ -25,7 +25,9 @@ export default {
       const normalizedAudioBuffer = normalize(croppedAudioBuffer);
       this.$store.dispatch({
         type:'acceptAudio',
-        audioBuffer: normalizedAudioBuffer
+        payload: {
+          audioBuffer: normalizedAudioBuffer
+        }
       });
     }
   }

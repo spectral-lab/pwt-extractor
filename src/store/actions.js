@@ -1,8 +1,9 @@
 import screens from '../constants/screens';
 import { SET_AUDIO_BUFFER, PUSH_SCREEN } from '../constants/mutation-types';
 
-const acceptAudio = ({ commit }, audioBuffer) => {
-  commit({
+const acceptAudio = ({ commit }, { payload }) => {
+  const { audioBuffer } = payload;
+ commit({
     type: SET_AUDIO_BUFFER,
     audioBuffer
   });
