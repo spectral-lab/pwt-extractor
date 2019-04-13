@@ -35,6 +35,7 @@ export default {
     /** @param {Array.<PeakLine>} peakLines */
     plotPeakLines(peakLines) {
       // Work In Progress
+      console.log(peakLines)
       console.log("Partial Viwer is under construction");
     }
   }
