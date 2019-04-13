@@ -1,23 +1,23 @@
 <template>
   <div id="main">
-    <OpenButton />
-    <Viewer />
-    <PlayButton />
-    <Mock-post-button />
+    <OpenButton v-if="renderOpenFile" />
+    <Viewer v-if="renderViewer" />
   </div>
 </template>
 
 <script>
 import OpenButton from './OpenButton.vue';
-import PlayButton from './PlayButton.vue';
-import MockPostButton from './MockPostButton.vue';
 import Viewer from './Viewer.vue';
+import { mapState } from 'vuex';
+import screens from '../constants/screens';
 
 export default {
+  computed: mapState({
+    renderOpenFile: state => state.screen === screens.OPEN_FILE,
+    renderViewer: state => state.screen === screens.VIEWER,
+  }),
   components: {
     OpenButton,
-    PlayButton,
-    MockPostButton,
     Viewer
   }
 }

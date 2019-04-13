@@ -3,10 +3,14 @@
       <canvas ref="waveform" width="800" height="300">waveform</canvas>
       <canvas ref="spectrogram" width="800" height="300">spectrogram</canvas>
       <canvas ref="peakLines" width="800" height="300">spectrogram</canvas>
+      <play-button />
+      <mock-post-button />
     </div>
 </template>
 
 <script>
+import PlayButton from './PlayButton.vue';
+import MockPostButton from './MockPostButton.vue';
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram } from '../utils/plot'
@@ -38,6 +42,10 @@ export default {
       console.log(peakLines)
       console.log("Partial Viwer is under construction");
     }
+  },
+  components:{
+    PlayButton,
+    MockPostButton
   }
 }
 </script>
