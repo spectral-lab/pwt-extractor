@@ -1,4 +1,4 @@
-import { SET_AUDIO_BUFFER, SET_SPECTROGRAM } from '../constants/mutation-types';
+import { SET_AUDIO_BUFFER, SET_SPECTROGRAM, PUSH_SCREEN } from '../constants/mutation-types';
 import eventHub from '../utils/eventHub';
 import { RENDER_VIEWER } from '../constants/events';
 
@@ -9,5 +9,8 @@ export default {
   },
   [SET_SPECTROGRAM](state, { spectrogram }) {
     state.spectrogram = spectrogram;
+  },
+  [PUSH_SCREEN](state, { screen }) {
+    state.screen = screen;
   }
 }
