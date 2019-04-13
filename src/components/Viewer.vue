@@ -1,11 +1,19 @@
 <template>
-  <div class=viewer>
-      <canvas ref="waveform" width="800" height="300">waveform</canvas>
-      <canvas ref="spectrogram" width="800" height="300">spectrogram</canvas>
-      <canvas ref="peakLines" width="800" height="300">spectrogram</canvas>
-      <play-button />
-      <mock-post-button />
+  <div id="container">
+    <div id="viewerArea">
+      <div class="viewer-child-container waveform">
+        <canvas id="waveform" ref="waveform" />
+      </div>
+      <div class="viewer-child-container spectrogram">
+        <canvas id="spectrogram" ref="spectrogram" />
+      </div>
+      <div class="viewer-child-container spectrogram">
+        <canvas id="peakLines" ref="peakLines" />
+      </div>
     </div>
+    <play-button />
+    <mock-post-button />
+  </div>
 </template>
 
 <script>
@@ -14,13 +22,11 @@ import MockPostButton from './MockPostButton.vue';
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram } from '../utils/plot'
-import { RENDER_VIEWER, RENDER_PEAK_LINES } from '../constants/events';
 import { SET_SPECTROGRAM } from '../constants/mutation-types';
 
 export default {
-  created() {
-    this.$eventHub.$on(RENDER_VIEWER, this.plotWaveformAndSpectrogram);
-    this.$eventHub.$on(RENDER_PEAK_LINES, this.plotPeakLines);
+  mounted() {
+    this.plotWaveformAndSpectrogram();
   },
   methods: {
     async plotWaveformAndSpectrogram() {
@@ -51,7 +57,25 @@ export default {
 </script>
 
 <style scoped>
-  canvas {
-    background-color: #13161A;
+  #container {
+    height: 100vh;
   }
+  #viewerArea {
+   position: relative;
+   margin: 0 auto;
+   width: 60%;
+   height: 300px;
+  }
+ .viewer-child-container {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   /* margin: 0 auto; */
+ }
+ .viewer-child-container canvas {
+   width: 100%;
+   height: 100%;
+ }
 </style>

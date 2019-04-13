@@ -97,6 +97,7 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
       rect.width = canvas.width * win.size / numberOfSamples;
       rect.height = rect.lowerEdge.y - rect.upperEdge.y;
       const HUE = 120;
+      ctx.globalAlpha = rect.luminance;
       ctx.fillStyle = `hsl(${HUE},20%,${rect.luminance * 100}%)`
         
       ctx.fillRect(
