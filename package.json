@@ -17,7 +17,8 @@
     "ndarray-unpack": "^1.0.0",
     "pngjs": "^3.4.0",
     "socket.io-client": "^2.2.0",
-    "vue": "^2.6.6"
+    "vue": "^2.6.6",
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
