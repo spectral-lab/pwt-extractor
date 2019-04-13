@@ -1,18 +1,21 @@
 <template>
   <div id="container">
+    <mock-post-button />
     <div id="viewerArea">
-      <div class="viewer-child-container waveform">
+      <div class="viewer-child-container waveform" :style="waveform">
         <canvas id="waveform" ref="waveform" />
       </div>
-      <div class="viewer-child-container spectrogram">
+      <div class="viewer-child-container spectrogram" :style="spectrogram">
         <canvas id="spectrogram" ref="spectrogram" />
       </div>
-      <div class="viewer-child-container spectrogram">
+      <div class="viewer-child-container spectrogram" :style="spectrogram">
         <canvas id="peakLines" ref="peakLines" />
       </div>
     </div>
-    <play-button />
-    <mock-post-button />
+    <div id="utilities">
+      <play-button />
+      <input type="range" min=0 v-model="viewerOpacity" max=100>
+    </div>
   </div>
 </template>
 
@@ -24,7 +27,28 @@ import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram } from '../utils/plot'
 import { SET_SPECTROGRAM } from '../constants/mutation-types';
 
+const fadedOpacity = value => value >= 0.5 ? 1.0 : value * 2.0
+
 export default {
+  data(){
+    return {
+      viewerOpacity: 50,
+    }
+  },
+  computed:{
+    waveform(){
+      const value = Number(this.viewerOpacity) / 100;
+      return {
+        opacity: fadedOpacity(value)
+      };
+    },
+    spectrogram(){
+      const value = Math.abs(1.0 - (Number(this.viewerOpacity) / 100));
+      return {
+        opacity: fadedOpacity(value)
+      };
+    }
+  },
   mounted() {
     this.plotWaveformAndSpectrogram();
   },
@@ -58,13 +82,18 @@ export default {
 
 <style scoped>
   #container {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    width: 70%;
     height: 100vh;
   }
   #viewerArea {
    position: relative;
-   margin: 0 auto;
-   width: 60%;
+   width: 100%;
    height: 300px;
+   background: black;
   }
  .viewer-child-container {
    position: absolute;
@@ -77,5 +106,8 @@ export default {
  .viewer-child-container canvas {
    width: 100%;
    height: 100%;
+ }
+ #utilities {
+   display: flex;
  }
 </style>
