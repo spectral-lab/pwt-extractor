@@ -27,7 +27,7 @@ export default {
 body {
   background: url('../../public/bg_image.jpg');
   color: white;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-align: center;
 }
 #main {
