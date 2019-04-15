@@ -57,7 +57,7 @@ export default {
     async plotWaveformAndSpectrogram() {
       const audioBuffer = this.$store.state.sourceAudioBuffer;
       const DESIRED_SAMPLE_RATE = 22050;
-      const windowSize = 1987;
+      const windowSize = 1024;
       const resampleEvent = await resample(audioBuffer, DESIRED_SAMPLE_RATE);
       const resampledAudioBuffer = resampleEvent.renderedBuffer;
       renderWaveform(resampledAudioBuffer, this.$refs.waveform);
