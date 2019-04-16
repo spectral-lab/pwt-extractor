@@ -6,9 +6,8 @@ import { PeakLine } from '../../classes'; // eslint-disable-line no-unused-vars
  * @param {Array.<PeakLine>} lines
  */
 const formatAsPwt = (resultOfSTFT, lines) => {
-  lines.sort((a, b) => a.startTimeIdx - b.startTimeIdx);
   const reduced = fillBlankTime(lines);
-  const linesToConvert = reduced.filter((_, idx) => idx < 15);
+  const linesToConvert = reduced.filter((_, idx) => idx < 15);  //15 is the max number of voices 
   const pwt = genPWT(resultOfSTFT, linesToConvert);
   return pwt;
 }
