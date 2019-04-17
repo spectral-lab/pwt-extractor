@@ -22,17 +22,17 @@ const waveform = (audioBuffer, canvas) => {
   }
 
   const DESIRED_LENGTH = 500000;
-  const WAVEFORM_COLOR = 'rgb(5, 80, 180)';
+  const WAVEFORM_COLOR = 'rgb(255,205,0)';
 
   const channelData = thinOutArray(audioBuffer.getChannelData(0), DESIRED_LENGTH);
   const ctx = canvas.getContext('2d');
   const centerAxis = canvas.height * 0.5;
-  const coef = canvas.height * 0.5;
+  const coef = canvas.height * 0.1;
   const interval = canvas.width / ( channelData.length - 1 )
 
   //  draw
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 0.03;
   ctx.globalCompositeOperation = 'screen';
   ctx.strokeStyle = WAVEFORM_COLOR;
   ctx.beginPath();

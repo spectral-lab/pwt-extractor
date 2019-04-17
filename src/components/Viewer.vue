@@ -2,11 +2,11 @@
   <div id="container">
     <mock-post-button />
     <div id="viewerArea">
-      <div class="viewer-child-container waveform" :style="waveform">
-        <canvas id="waveform" ref="waveform" />
-      </div>
       <div class="viewer-child-container spectrogram" :style="spectrogram">
         <canvas id="spectrogram" ref="spectrogram" />
+      </div>
+      <div class="viewer-child-container waveform" :style="waveform">
+        <canvas id="waveform" ref="waveform" />
       </div>
       <div class="viewer-child-container spectrogram" :style="spectrogram">
         <canvas id="peakLines" ref="peakLines" />
