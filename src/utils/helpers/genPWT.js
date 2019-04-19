@@ -8,17 +8,18 @@ import { PeakLine } from '../../classes'  // eslint-disable-line no-unused-vars
  */
 const genPWT = (resultOfSTFT, lines) => {
   const pwt = initPWT(resultOfSTFT, lines);
-  const notes = resultOfSTFT.freqs.map(freq => ftom(freq));
   lines.forEach((line, idx) => {
     line.points.forEach((point) => {
-      const row = point[0];
-      const column = point[1];
-      pwt.magnitude[idx][column] = resultOfSTFT.magnitude2d[row][column];
-      pwt.pitch[idx][column] = notes[row];
+      const column = point.position.column; 
+      pwt.magnitude[idx][column] = point.magnitude;
+      pwt.pitch[idx][column] = ftom(point.frequency);
     })
   });
   return pwt;
 } 
+
+
+// Subfunctions
 
 /**
  * @param {Object} resultOfSTFT

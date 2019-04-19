@@ -22,7 +22,7 @@ export default {
         colorType: 0,
         inputHasAlpha: false
       });
-      const colors = spectrogram.magnitude2d.flat().map(magnitude => {
+      png.data = spectrogram.magnitude2d.flat().map(magnitude => {
         const blackThreshold = -78 // in dB
         const db = gainToDecibels(magnitude);
         const filterLow = Math.max(db, blackThreshold);
@@ -30,7 +30,6 @@ export default {
         const ret = Math.round(normalized * 255);
         return ret;
       });
-      png.data = colors;
       const buff = PNG.sync.write(png);
       fetch(process.env.VUE_APP_SERVER, {
         method: 'POST',
@@ -38,13 +37,15 @@ export default {
         mode: 'cors'
       })
       .then(d => d.json())
-      .then(_detectedPeakPoints => {
+      .then(_feature_lines => {
         /**
          * All points detected as peak. Array is splited into chunks. Each chunk corresponds to each line.
          * @type {Array.<Array.<Array.<Number>>>} 
          */
-        const detectedPeakPoints = _detectedPeakPoints;
-        const peakLines = detectedPeakPoints.map((pointsInOneLine, idx) => new PeakLine(pointsInOneLine, idx));
+        const feature_lines = _feature_lines;
+        const peakLines = feature_lines.map((pointsInOneLine, idx) => {
+          return new PeakLine(pointsInOneLine, spectrogram, idx);
+        });
         this.$eventHub.$emit(RENDER_PEAK_LINES, peakLines);
         return formatAsPwt(spectrogram, peakLines);
       })
