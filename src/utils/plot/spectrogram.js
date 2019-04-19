@@ -12,70 +12,52 @@ import unpackFromNdArray from 'ndarray-unpack'
  * @param  {number} sr Sampling rate of audio buffer. Integer
  * @return {Promise.<{times: Array.<number>, freqs: Array.<number>, magnitude2d: Array.<Array<number>>}>} freqs is decimal values in Hz. From low to high. magnitude2d is decimals from 0. to 1. From low freq to high freq. 
  */
-const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolve => {
-  const win = {};
+const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolve => {  
+  // Initialize and calculate necessary informations for subsequenct runFFTAndPlot 
   const originalFloatArray = audioBuffer.getChannelData(0);
-  
-  // NEED REFACTOR
-  // window size must be power of 2
-  // minimum value is 8
-  if ( _windowSize > originalFloatArray.length) {
-    win.size = 2 ** Math.floor( Math.log2( originalFloatArray.length ) )
-  } else {
-    win.size = 2 ** Math.round( Math.log2( _windowSize ) )
-  }
-  const stepSize = win.size / 4 ;
-  win.getLeftEdgeSampleIdx = windowIdx => windowIdx*stepSize;
-  win.getRightEdgeSampleIdx = windowIdx => (win.size-1) + windowIdx*stepSize;
-  win.getCenterSampleIdx = windowIdx => win.size/2 + windowIdx*stepSize;
+  const win = initWin(_windowSize, originalFloatArray);
   const windowFunction = new WindowFunction(7); // "7" corresponds to HANN window 
   const fft = new FFT(win.size, sr);
-
-  /**
-   * @param  {number} windowSize Integer
-   * @param  { FFT } fft instance of FFT class of dsp.js 
-   * @return { Array.<Number> } An array of center frequencies of each frequency bin.
-   */
-  const getCenterFreqs = (windowSize, fft) => {
-    const numberOfFrequencyBins = windowSize / 2;
-    // @ts-ignore
-    const freqs = Array.from({ length: numberOfFrequencyBins }, (_, i) => i).map(i => fft.getBandFrequency(i));
-    return freqs;
-  }
-  // Set up Canvas
-  const ctx = canvas.getContext('2d');
-
-  // calculate Y position of each row
   const freqs = getCenterFreqs(win.size, fft);
-  const midiNoteNums = freqs.map(freq => ftom(freq));
-  const highestNote = midiNoteNums[midiNoteNums.length - 1];
-  const lowestNote = midiNoteNums[0];
-  const rowPositions = midiNoteNums.map(noteNum => (highestNote - noteNum) / (highestNote - lowestNote));
+  const rowPositions = calcYPosOfRows(freqs);
+  const resultOfSTFT = initResultOfSTFT()
+  resultOfSTFT.freqs = freqs
+  
+  // Main
+  const runFFTAndPlot = () => {
+    let i = 0; 
+    /** @type {Array.<Array>} Array of spectrum (magnitude values from low freq bin to high freq bin) */
+    const spectra = [];
 
-  const resultOfSTFT = {
-    times: [], 
-    freqs: freqs, 
-    magnitude2d: null
-  }
-  let i = 0; 
-  /**@type {Array.<Array>} Array of spectrum (magnitude values from low freq bin to high freq bin)  */
-  const spectra = [];
-  const plotColumn = () => {
-    // Run windowing and FFT
-    const slicedBuffer = originalFloatArray.slice(win.getLeftEdgeSampleIdx(i), win.getRightEdgeSampleIdx(i) + 1);
-    resultOfSTFT.times.push(win.getCenterSampleIdx(i) / sr);
-    const windowedBuffer = windowFunction.process(slicedBuffer);
-    fft.forward(windowedBuffer);
-    // @ts-ignore
-    win.spectrum = fft.spectrum;
-    spectra.push(Array.from(win.spectrum));
-    // spectra.push(fft.spectrum)
-    
-    // Plot rectangles
-    /** @type {number} How many samples is in the original buffer  */
-    const numberOfSamples = originalFloatArray.length;
-    const numberOfRows = win.spectrum.length;
-    win.spectrum.forEach((magnitude, rowIdx) => {
+    /** Recursive function */
+    const plotColumn = () => {
+      // Run windowing and FFT
+      const slicedBuffer = originalFloatArray.slice(win.getLeftEdgeSampleIdx(i), win.getRightEdgeSampleIdx(i) + 1);
+      resultOfSTFT.times.push(win.getCenterSampleIdx(i) / sr);
+      const windowedBuffer = windowFunction.process(slicedBuffer);
+      fft.forward(windowedBuffer);
+      // @ts-ignore
+      win.spectrum = fft.spectrum;
+      spectra.push(Array.from(win.spectrum));
+      // spectra.push(fft.spectrum)
+      
+      // Plot rectangles
+      
+      win.spectrum.forEach(plotRect)
+      i++;
+      if (win.getRightEdgeSampleIdx(i) < originalFloatArray.length) {
+        window.requestAnimationFrame(plotColumn);  // recursion
+      } else {
+        resultOfSTFT.magnitude2d = unpackFromNdArray(packIntoNdarray(spectra).transpose(1, 0));  
+        resolve(resultOfSTFT);
+      }
+    }
+
+    /** Subfunction of plotColumn */
+    const plotRect = (magnitude, rowIdx) => {
+      /** @type {number} How many samples is in the original buffer  */
+      const numberOfSamples = originalFloatArray.length;
+      const numberOfRows = win.spectrum.length;
       const blackThreshold = -78 // in dB
       const rect = {
         center: {
@@ -97,6 +79,7 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
       rect.width = canvas.width * win.size / numberOfSamples;
       rect.height = rect.lowerEdge.y - rect.upperEdge.y;
       const HUE = 200;
+      const ctx = canvas.getContext('2d');
       ctx.globalAlpha = rect.luminance;
       ctx.fillStyle = `hsl(${HUE},100%,${rect.luminance * 100}%)`
         
@@ -106,16 +89,69 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
         rect.width,
         rect.height
       );
-    })
-    i++;
-    if (win.getRightEdgeSampleIdx(i) < originalFloatArray.length) {
-      window.requestAnimationFrame(plotColumn);
-    } else {
-      resultOfSTFT.magnitude2d = unpackFromNdArray(packIntoNdarray(spectra).transpose(1, 0));  
-      resolve(resultOfSTFT);
     }
+    window.requestAnimationFrame(plotColumn);
   }
-
-  window.requestAnimationFrame(plotColumn);
+  
+  runFFTAndPlot()
 })
+
+// Subfunctions
+/** initialize `win` object, which represents window of STFT. */ 
+const initWin = (_windowSize, originalFloatArray) => {
+  const win = {};
+  win.size = normalizeWindowSize(_windowSize, originalFloatArray);
+  const stepSize = win.size / 4 ;
+  win.getLeftEdgeSampleIdx = windowIdx => windowIdx*stepSize;
+  win.getRightEdgeSampleIdx = windowIdx => (win.size-1) + windowIdx*stepSize;
+  win.getCenterSampleIdx = windowIdx => win.size/2 + windowIdx*stepSize;
+  return win
+}
+
+const initResultOfSTFT = () => {
+  return {
+    times: [], 
+    freqs: [], 
+    magnitude2d: null
+  }
+}
+
+/**
+ * Window size must be power of 2. minimum value is 8.
+ * @param  {number} windowSize
+ * @param  {Float32Array} originalFloatArray
+ */
+const normalizeWindowSize = (windowSize, originalFloatArray) => {
+  if (windowSize < 8) {
+    return 8
+  }
+  if ( windowSize > originalFloatArray.length) {
+    return 2 ** Math.floor( Math.log2( originalFloatArray.length ) );
+  } 
+  return 2 ** Math.round( Math.log2( windowSize ) );
+}
+/**
+ * calculate Y position of each row
+ * @param  {Array.<number>} freqs
+ * @returns {Array.<number>} Relative position in canvas. highest=0; lowest=1; 
+ */
+const calcYPosOfRows = (freqs) => {
+  const midiNoteNums = freqs.map(freq => ftom(freq));
+  const highestNote = midiNoteNums[midiNoteNums.length - 1];
+  const lowestNote = midiNoteNums[0];
+  return midiNoteNums.map(noteNum => (highestNote - noteNum) / (highestNote - lowestNote));
+}
+
+/**
+   * @param  {number} windowSize Integer
+   * @param  { FFT } fft instance of FFT class of dsp.js 
+   * @return { Array.<Number> } An array of center frequencies of each frequency bin.
+   */
+const getCenterFreqs = (windowSize, fft) => {
+  const numberOfFrequencyBins = windowSize / 2;
+  // @ts-ignore
+  const freqs = Array.from({ length: numberOfFrequencyBins }, (_, i) => i).map(i => fft.getBandFrequency(i));
+  return freqs;
+}
+
 export default spectrogram;
