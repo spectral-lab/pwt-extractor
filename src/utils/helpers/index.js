@@ -4,6 +4,8 @@ import playAudioBuffer from './playAudioBuffer';
 import fillBlankTime from './fillBlankTime';
 import genPWT from './genPWT'
 import normalizeMagnitude from './normalizeMagnitude';
+import makePNGBuffer from './makePNGBuffer';
+import formatAsPwt from './formatAsPwt'
 
 export {
   normalize2d,
@@ -11,5 +13,7 @@ export {
   playAudioBuffer,
   fillBlankTime,
   genPWT,
-  normalizeMagnitude
+  normalizeMagnitude,
+  makePNGBuffer,
+  formatAsPwt
 }
