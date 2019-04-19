@@ -3,11 +3,13 @@ import ftom from './ftom';
 import playAudioBuffer from './playAudioBuffer';
 import fillBlankTime from './fillBlankTime';
 import genPWT from './genPWT'
+import normalizeMagnitude from './normalizeMagnitude';
 
 export {
   normalize2d,
   ftom,
   playAudioBuffer,
   fillBlankTime,
-  genPWT
+  genPWT,
+  normalizeMagnitude
 }
