@@ -61,7 +61,12 @@ export default {
       const resampleEvent = await resample(audioBuffer, DESIRED_SAMPLE_RATE);
       const resampledAudioBuffer = resampleEvent.renderedBuffer;
       renderWaveform(resampledAudioBuffer, this.$refs.waveform);
-      const spectrogram = await renderSpectrogram(resampledAudioBuffer, this.$refs.spectrogram, windowSize, DESIRED_SAMPLE_RATE);
+      const spectrogram = await renderSpectrogram(
+        resampledAudioBuffer, 
+        this.$refs.spectrogram, 
+        windowSize, 
+        DESIRED_SAMPLE_RATE
+      );
       this.$store.commit({
         type: SET_SPECTROGRAM,
         spectrogram

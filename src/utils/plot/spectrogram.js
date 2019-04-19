@@ -39,14 +39,12 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
       // @ts-ignore
       win.spectrum = fft.spectrum;
       spectra.push(Array.from(win.spectrum));
-      // spectra.push(fft.spectrum)
-      
-      // Plot rectangles
-      
-      win.spectrum.forEach(plotRect)
+      win.spectrum.forEach(plotRect);
+
+      // Increment and resursion
       i++;
       if (win.getRightEdgeSampleIdx(i) < originalFloatArray.length) {
-        window.requestAnimationFrame(plotColumn);  // recursion
+        window.requestAnimationFrame(plotColumn);
       } else {
         resultOfSTFT.magnitude2d = unpackFromNdArray(packIntoNdarray(spectra).transpose(1, 0));  
         resolve(resultOfSTFT);
@@ -96,16 +94,18 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
   runFFTAndPlot()
 })
 
+
 // Subfunctions
+
 /** initialize `win` object, which represents window of STFT. */ 
 const initWin = (_windowSize, originalFloatArray) => {
   const win = {};
   win.size = normalizeWindowSize(_windowSize, originalFloatArray);
-  const stepSize = win.size / 4 ;
+  const stepSize = win.size / 4;
   win.getLeftEdgeSampleIdx = windowIdx => windowIdx*stepSize;
   win.getRightEdgeSampleIdx = windowIdx => (win.size-1) + windowIdx*stepSize;
   win.getCenterSampleIdx = windowIdx => win.size/2 + windowIdx*stepSize;
-  return win
+  return win;
 }
 
 const initResultOfSTFT = () => {
