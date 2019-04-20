@@ -7,7 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --watch"
   },
   "dependencies": {
     "decibels": "^2.0.0",
