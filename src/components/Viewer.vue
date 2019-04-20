@@ -71,7 +71,7 @@ export default {
       );
 
       const tmpImg = this.$refs.tmp
-      tmpImg.src =  "data:image/png;base64,"+ btoa(String.fromCharCode.apply(null, makePNGBuffer(spectrogram)));
+      tmpImg.src =  "data:image/png;base64,"+ btoa(String.fromCharCode.apply(null, makePNGBuffer(spectrogram.magnitude2d)));
 
       this.$store.commit({
         type: SET_SPECTROGRAM,
