@@ -1,5 +1,8 @@
 # pwt-extractor
 
+## Project Docs
+[HERE!](https://scrapbox.io/frontier-of-music/Project_Starling_Docs_Main_Page)
+
 ## What is PWT?
 See [here](https://docs.google.com/presentation/d/1ymAdCnPOHE0zmWonx3Z4-dZTxSzDACBRHViL6W8dvDw/edit#slide=id.p).
 
