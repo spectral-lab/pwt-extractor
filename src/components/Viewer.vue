@@ -16,6 +16,7 @@
       <play-button />
       <slider v-model="viewerOpacity" />
     </div>
+    <img ref="tmp">
   </div>
 </template>
 
@@ -27,6 +28,7 @@ import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram } from '../utils/plot'
 import { SET_SPECTROGRAM } from '../constants/mutation-types';
+import { makePNGBuffer } from '../utils/helpers';
 
 const fadedOpacity = value => value >= 0.5 ? 1.0 : value * 2.0
 
@@ -67,6 +69,10 @@ export default {
         windowSize, 
         DESIRED_SAMPLE_RATE
       );
+
+      const tmpImg = this.$refs.tmp
+      tmpImg.src =  "data:image/png;base64,"+ btoa(String.fromCharCode.apply(null, makePNGBuffer(spectrogram.magnitude2d)));
+
       this.$store.commit({
         type: SET_SPECTROGRAM,
         spectrogram

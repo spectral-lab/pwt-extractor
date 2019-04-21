@@ -31,10 +31,11 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
 
     /** Recursive function */
     const plotColumn = () => {
-      // Run windowing and FFT
+      // Run windowing
       const slicedBuffer = originalFloatArray.slice(win.getLeftEdgeSampleIdx(i), win.getRightEdgeSampleIdx(i) + 1);
       resultOfSTFT.times.push(win.getCenterSampleIdx(i) / sr);
       const windowedBuffer = windowFunction.process(slicedBuffer);
+      // Run FFT
       fft.forward(windowedBuffer);
       // @ts-ignore
       win.spectrum = fft.spectrum;
@@ -130,6 +131,7 @@ const normalizeWindowSize = (windowSize, originalFloatArray) => {
   } 
   return 2 ** Math.round( Math.log2( windowSize ) );
 }
+
 /**
  * calculate Y position of each row
  * @param  {Array.<number>} freqs

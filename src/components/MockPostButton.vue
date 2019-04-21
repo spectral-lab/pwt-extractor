@@ -13,7 +13,7 @@ export default {
   methods: {
     postImage(){
       const { spectrogram } = this.$store.state;
-      const buff = makePNGBuffer(spectrogram);
+      const buff = makePNGBuffer(spectrogram.magnitude2d);
       fetch(process.env.VUE_APP_SERVER, {
         method: 'POST',
         body: buff,
