@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 import Vue from "vue";
 import App from "./App.vue";
 import eventHub from './utils/eventHub';
