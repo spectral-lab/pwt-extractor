@@ -20,13 +20,13 @@ export default {
         mode: 'cors'
       })
       .then(d => d.json())
-      .then(_feature_lines => {
+      .then(_featureLines => {
         /**
          * All points detected as peak. Array is splited into chunks. Each chunk corresponds to each line.
          * @type {Array.<Array.<Array.<Number>>>} 
          */
-        const feature_lines = _feature_lines;
-        const peakLines = feature_lines.map((pointsInOneLine, idx) => {
+        const featureLines = _featureLines;
+        const peakLines = featureLines.map((pointsInOneLine, idx) => {
           return new PeakLine(pointsInOneLine, spectrogram, idx);
         });
         this.$eventHub.$emit(RENDER_PEAK_LINES, peakLines);

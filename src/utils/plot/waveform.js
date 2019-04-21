@@ -4,26 +4,8 @@
  * @param  {HTMLCanvasElement} canvas
  */
 const waveform = (audioBuffer, canvas) => {
-  /**
-   * subfunction to thin out array by picking up items with a fixed interval.
-   * @param  {Float32Array | Array} array
-   * @param  {number} DESIRED_LENGTH Integer
-   * @return {Array}
-   */
-  const thinOutArray = (array, DESIRED_LENGTH) => {
-    const denominator = Math.max(1, Math.ceil(array.length / DESIRED_LENGTH));
-    const thinArray = [];
-    for (let i = 0; i < array.length; i++) {
-      if (i % denominator === 0) {
-        thinArray.push(array[i]);
-      }
-    }
-    return thinArray;
-  }
-
   const DESIRED_LENGTH = 500000;
   const WAVEFORM_COLOR = 'rgb(255,205,0)';
-
   const channelData = thinOutArray(audioBuffer.getChannelData(0), DESIRED_LENGTH);
   const ctx = canvas.getContext('2d');
   const centerAxis = canvas.height * 0.5;
@@ -50,3 +32,23 @@ const waveform = (audioBuffer, canvas) => {
 }
 
 export default waveform;
+
+
+// Subfunctions
+
+/**
+ * subfunction to thin out array by picking up items with a fixed interval.
+ * @param  {Float32Array | Array} array
+ * @param  {number} DESIRED_LENGTH Integer
+ * @return {Array}
+ */
+const thinOutArray = (array, DESIRED_LENGTH) => {
+  const denominator = Math.max(1, Math.ceil(array.length / DESIRED_LENGTH));
+  const thinArray = [];
+  for (let i = 0; i < array.length; i++) {
+    if (i % denominator === 0) {
+      thinArray.push(array[i]);
+    }
+  }
+  return thinArray;
+}

@@ -5,18 +5,17 @@
       <div class="viewer-child-container spectrogram" :style="spectrogram">
         <canvas id="spectrogram" ref="spectrogram" />
       </div>
+      <div id="peakLinesContainer" class="viewer-child-container spectrogram" :style="spectrogram">
+        <canvas id="peakLines" ref="peakLines" />
+      </div>
       <div class="viewer-child-container waveform" :style="waveform">
         <canvas id="waveform" ref="waveform" />
-      </div>
-      <div class="viewer-child-container spectrogram" :style="spectrogram">
-        <canvas id="peakLines" ref="peakLines" />
       </div>
     </div>
     <div id="utilities">
       <play-button />
       <slider v-model="viewerOpacity" />
     </div>
-    <img ref="tmp">
   </div>
 </template>
 
@@ -26,9 +25,9 @@ import MockPostButton from './MockPostButton.vue';
 import Slider from './Slider.vue'
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
-import { renderWaveform, renderSpectrogram } from '../utils/plot'
+import { renderWaveform, renderSpectrogram, renderPeakLines } from '../utils/plot'
 import { SET_SPECTROGRAM } from '../constants/mutation-types';
-import { makePNGBuffer } from '../utils/helpers';
+import { RENDER_PEAK_LINES } from '../constants/events';
 
 const fadedOpacity = value => value >= 0.5 ? 1.0 : value * 2.0
 
@@ -54,6 +53,10 @@ export default {
   },
   mounted() {
     this.plotWaveformAndSpectrogram();
+    this.$eventHub.$on(RENDER_PEAK_LINES, this.plotPeakLines)
+  },
+  beforeDestroy() {
+    this.$eventHub.$off(RENDER_PEAK_LINES);
   },
   methods: {
     async plotWaveformAndSpectrogram() {
@@ -70,9 +73,6 @@ export default {
         DESIRED_SAMPLE_RATE
       );
 
-      const tmpImg = this.$refs.tmp
-      tmpImg.src =  "data:image/png;base64,"+ btoa(String.fromCharCode.apply(null, makePNGBuffer(spectrogram.magnitude2d)));
-
       this.$store.commit({
         type: SET_SPECTROGRAM,
         spectrogram
@@ -80,9 +80,7 @@ export default {
     },
     /** @param {Array.<PeakLine>} peakLines */
     plotPeakLines(peakLines) {
-      // Work In Progress
-      console.log(peakLines)
-      console.log("Partial Viwer is under construction");
+      renderPeakLines(peakLines, this.$store.state.spectrogram, this.$refs.peakLines)
     }
   },
   components:{
@@ -107,6 +105,15 @@ export default {
    width: 100%;
    height: 420px;
    background: black;
+  }
+  @keyframes blinker {
+    0%   { opacity: 1; }
+    20%  { opacity: 1; }
+    60%  { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  #peakLinesContainer {
+    animation: blinker 3.6s infinite;
   }
  .viewer-child-container {
    position: absolute;

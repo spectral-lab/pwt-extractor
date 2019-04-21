@@ -6,6 +6,7 @@ import genPWT from './genPWT'
 import normalizeMagnitude from './normalizeMagnitude';
 import makePNGBuffer from './makePNGBuffer';
 import formatAsPwt from './formatAsPwt'
+import calcYPos from './calcYPos';
 
 export {
   normalize2d,
@@ -15,5 +16,6 @@ export {
   genPWT,
   normalizeMagnitude,
   makePNGBuffer,
-  formatAsPwt
+  formatAsPwt,
+  calcYPos
 }
