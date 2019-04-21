@@ -1,8 +1,8 @@
 import { FFT, WindowFunction } from 'dsp.js-browser';
 import gainToDecibels from 'decibels/from-gain';
-import { ftom } from '../helpers';
 import packIntoNdarray from 'ndarray-pack';
 import unpackFromNdArray from 'ndarray-unpack'
+import { calcYPos } from '../helpers'
 
 /**
  * Calculate STFT, Short Time Fourier Transform, on audio buffer and plot a spectrogram on canvas element.
@@ -19,7 +19,6 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
   const windowFunction = new WindowFunction(7); // "7" corresponds to HANN window 
   const fft = new FFT(win.size, sr);
   const freqs = getCenterFreqs(win.size, fft);
-  const rowPositions = calcYPosOfRows(freqs);
   const resultOfSTFT = initResultOfSTFT()
   resultOfSTFT.freqs = freqs
   
@@ -61,14 +60,14 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
       const rect = {
         center: {
           x: canvas.width * win.getCenterSampleIdx(i) / numberOfSamples,
-          y: canvas.height * rowPositions[rowIdx]
+          y: calcYPos(freqs[rowIdx], freqs, canvas.height)
         },
         isLowestRect: rowIdx === 0,
         isUpmostRect: rowIdx === numberOfRows.length - 1,
         luminance: ( Math.max(gainToDecibels(magnitude) , blackThreshold) + Math.abs(blackThreshold) ) / Math.abs(blackThreshold),
       }
-      const oneLowerRectCenterY = rect.isLowestRect ? canvas.height : canvas.height * rowPositions[rowIdx - 1];
-      const oneUpperRectCenterY = rect.isUpmostRect ? 0 : canvas.height * rowPositions[rowIdx + 1];
+      const oneLowerRectCenterY = rect.isLowestRect ? canvas.height : calcYPos(freqs[rowIdx - 1], freqs, canvas.height);
+      const oneUpperRectCenterY = rect.isUpmostRect ? 0 : calcYPos(freqs[rowIdx + 1], freqs, canvas.height);
       rect.lowerEdge = {
         y: (oneLowerRectCenterY + rect.center.y) / 2
       };
@@ -94,6 +93,8 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
   
   runFFTAndPlot()
 })
+
+export default spectrogram;
 
 
 // Subfunctions
@@ -133,18 +134,6 @@ const normalizeWindowSize = (windowSize, originalFloatArray) => {
 }
 
 /**
- * calculate Y position of each row
- * @param  {Array.<number>} freqs
- * @returns {Array.<number>} Relative position in canvas. highest=0; lowest=1; 
- */
-const calcYPosOfRows = (freqs) => {
-  const midiNoteNums = freqs.map(freq => ftom(freq));
-  const highestNote = midiNoteNums[midiNoteNums.length - 1];
-  const lowestNote = midiNoteNums[0];
-  return midiNoteNums.map(noteNum => (highestNote - noteNum) / (highestNote - lowestNote));
-}
-
-/**
    * @param  {number} windowSize Integer
    * @param  { FFT } fft instance of FFT class of dsp.js 
    * @return { Array.<Number> } An array of center frequencies of each frequency bin.
@@ -155,5 +144,3 @@ const getCenterFreqs = (windowSize, fft) => {
   const freqs = Array.from({ length: numberOfFrequencyBins }, (_, i) => i).map(i => fft.getBandFrequency(i));
   return freqs;
 }
-
-export default spectrogram;
