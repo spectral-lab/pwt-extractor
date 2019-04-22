@@ -7,6 +7,7 @@ import normalizeMagnitude from './normalizeMagnitude';
 import makePNGBuffer from './makePNGBuffer';
 import formatAsPwt from './formatAsPwt'
 import calcYPos from './calcYPos';
+import decibelCurve from './decibelCurve'
 
 export {
   normalize2d,
@@ -17,5 +18,6 @@ export {
   normalizeMagnitude,
   makePNGBuffer,
   formatAsPwt,
-  calcYPos
+  calcYPos,
+  decibelCurve
 }
