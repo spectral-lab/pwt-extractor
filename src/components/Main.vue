@@ -1,9 +1,7 @@
 <template>
   <div id="main">
     <OpenFile v-if="renderOpenFile" />
-    <Messages class="messages" v-if="renderViewer" />
-    <Viewer class="viewer" v-if="renderViewer" />
-    <Utilities class="utilities" v-if="renderViewer" />
+    <Viewer v-if="renderViewer" />
   </div>
 </template>
 
@@ -12,8 +10,6 @@ import OpenFile from './OpenFile.vue';
 import Viewer from './Viewer.vue';
 import { mapState } from 'vuex';
 import screens from '../constants/screens';
-import Utilities from './Utilities.vue';
-import Messages from './Messages.vue'
 
 export default {
   computed: mapState({
@@ -23,8 +19,6 @@ export default {
   components: {
     OpenFile,
     Viewer,
-    Utilities,
-    Messages,
   }
 }
 </script>
@@ -44,17 +38,4 @@ body {
   overflow-x: hidden; 
   overflow-y: auto;
 }
-.messages {
-  margin: 0;
-  height: 20vh;
-}
-.viewer {
-  margin: 0;
-  height: 60vh;
-}
-.utilities {
-  margin: 0;
-  height: 20vh;
-}
-
 </style>

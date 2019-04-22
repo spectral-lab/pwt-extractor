@@ -1,5 +1,6 @@
 <template>
   <div id="container">
+    <Messages id="messages" />
     <div id="viewerWrapper">
       <div id="viewerArea">
         <div class="viewer-child-container spectrogram" :style="spectrogram">
@@ -16,11 +17,14 @@
         <slider v-model="viewerOpacity" />
       </div>
     </div>
+    <Utilities id="utilities" />
   </div>
 </template>
 
 <script>
 import Slider from './Slider.vue'
+import Messages from './Messages.vue'
+import Utilities from './Utilities.vue';
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram, renderPeakLines } from '../utils/plot'
@@ -90,7 +94,9 @@ export default {
     }
   },
   components:{
-    Slider
+    Slider,
+    Messages,
+    Utilities
   }
 }
 </script>
@@ -103,6 +109,10 @@ export default {
     justify-content: space-around;
     align-items: center;
     height: 100%;
+  }
+  #messages {
+    margin: 0;
+    height: 20vh;
   }
   #viewerWrapper {
     position: relative;
