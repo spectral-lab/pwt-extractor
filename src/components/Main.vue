@@ -4,7 +4,6 @@
     <Messages class="messages" v-if="renderViewer" />
     <Viewer class="viewer" v-if="renderViewer" />
     <Utilities class="utilities" v-if="renderViewer" />
-    <Modal v-if="showModal" />
   </div>
 </template>
 
@@ -15,20 +14,17 @@ import { mapState } from 'vuex';
 import screens from '../constants/screens';
 import Utilities from './Utilities.vue';
 import Messages from './Messages.vue'
-import Modal from './Modal.vue'
 
 export default {
   computed: mapState({
     renderOpenFile: state => state.screen === screens.OPEN_FILE,
     renderViewer: state => state.screen === screens.VIEWER,
-    showModal: state => state.showModal === true
   }),
   components: {
     OpenFile,
     Viewer,
     Utilities,
     Messages,
-    Modal
   }
 }
 </script>
