@@ -1,7 +1,9 @@
 <template>
   <div id="container">
     <Messages v-bind="{openModal}"/>
-    <Modal v-if="showModal" />
+    <Modal v-if="showModal">
+      <loading />
+    </Modal>
     <div id="viewerWrapper">
       <div id="viewerArea">
         <div class="viewer-child-container spectrogram" :style="spectrogram">
@@ -27,6 +29,7 @@ import Slider from '../components/Slider.vue'
 import Messages from '../components/Messages.vue'
 import Utilities from '../components/Utilities.vue';
 import Modal from '../components/Modal.vue';
+import Loading from '../components/Loading.vue';
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram, renderPeakLines } from '../utils/plot'
@@ -93,6 +96,7 @@ export default {
   },
   components:{
     Modal,
+    Loading,
     Slider,
     Messages,
     Utilities
