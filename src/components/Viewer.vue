@@ -28,7 +28,7 @@ import Utilities from './Utilities.vue';
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram, renderPeakLines } from '../utils/plot'
-import { SET_SPECTROGRAM, SWITCH_MODAL } from '../constants/mutation-types';
+import { SET_SPECTROGRAM } from '../constants/mutation-types';
 import { RENDER_PEAK_LINES } from '../constants/events';
 
 const fadedOpacity = value => value >= 0.5 ? 1.0 : value * 2.0
@@ -62,10 +62,6 @@ export default {
   },
   methods: {
     async plotWaveformAndSpectrogram() {
-      this.$store.commit({
-        type: SWITCH_MODAL,
-        showModal: true
-      });
       const audioBuffer = this.$store.state.sourceAudioBuffer;
       const DESIRED_SAMPLE_RATE = 22050;
       const windowSize = 1024;
@@ -83,10 +79,6 @@ export default {
         type: SET_SPECTROGRAM,
         spectrogram
       });
-      this.$store.commit({
-        type: SWITCH_MODAL,
-        showModal: false
-      });
     },
     /** @param {Array.<PeakLine>} peakLines */
     plotPeakLines(peakLines) {
@@ -103,7 +95,6 @@ export default {
 
 <style scoped>
   #container {
-    /* background: red; */
     display: flex;
     margin: 0 auto;
     flex-direction: column;

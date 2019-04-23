@@ -1,4 +1,4 @@
-import { SET_AUDIO_BUFFER, SET_SPECTROGRAM, PUSH_SCREEN , SWITCH_MODAL} from '../constants/mutation-types';
+import { SET_AUDIO_BUFFER, SET_SPECTROGRAM, PUSH_SCREEN } from '../constants/mutation-types';
 
 export default {
   [SET_AUDIO_BUFFER](state, { audioBuffer }) {
@@ -9,8 +9,5 @@ export default {
   },
   [PUSH_SCREEN](state, { screen }) {
     state.screen = screen;
-  },
-  [SWITCH_MODAL](state, { showModal }) {
-    state.showModal = showModal;
   }
 }

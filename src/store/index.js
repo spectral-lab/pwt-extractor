@@ -8,7 +8,6 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     screen: screens.OPEN_FILE,
-    showModal: false,
     sourceAudioBuffer: new AudioBuffer({
       length: 1, 
       numberOfChannels: 1, 

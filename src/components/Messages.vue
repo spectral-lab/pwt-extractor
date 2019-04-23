@@ -9,20 +9,11 @@
 
 <script>
 import postImage from '../utils/postImage';
-import { SWITCH_MODAL } from '../constants/mutation-types'
 export default {
   methods: {
     async postImage(){
       const { spectrogram } = this.$store.state;
-      this.$store.commit({
-        type: SWITCH_MODAL,
-        showModal: true
-      });
       await postImage(spectrogram, this.$eventHub);
-      this.$store.commit({
-        type: SWITCH_MODAL,
-        showModal: false
-      });
     }
   }
 }
