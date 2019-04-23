@@ -6,9 +6,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import OpenFile from '../pages/OpenFile.vue';
 import Viewer from '../pages/Viewer.vue';
-import { mapState } from 'vuex';
 import pages from '../constants/pages';
 
 export default {

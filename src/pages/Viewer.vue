@@ -1,6 +1,7 @@
 <template>
   <div id="container">
-    <Messages />
+    <Messages v-bind="{openModal}"/>
+    <Modal v-if="showModal" />
     <div id="viewerWrapper">
       <div id="viewerArea">
         <div class="viewer-child-container spectrogram" :style="spectrogram">
@@ -25,6 +26,7 @@
 import Slider from '../components/Slider.vue'
 import Messages from '../components/Messages.vue'
 import Utilities from '../components/Utilities.vue';
+import Modal from '../components/Modal.vue';
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram, renderPeakLines } from '../utils/plot'
@@ -37,6 +39,7 @@ export default {
   data(){
     return {
       viewerOpacity: 50,
+      showModal: false,
     }
   },
   computed:{
@@ -61,6 +64,9 @@ export default {
     this.$eventHub.$off(RENDER_PEAK_LINES);
   },
   methods: {
+    openModal(){
+      this.$data.showModal = true;
+    },
     async plotWaveformAndSpectrogram() {
       const audioBuffer = this.$store.state.sourceAudioBuffer;
       const DESIRED_SAMPLE_RATE = 22050;
@@ -86,6 +92,7 @@ export default {
     }
   },
   components:{
+    Modal,
     Slider,
     Messages,
     Utilities

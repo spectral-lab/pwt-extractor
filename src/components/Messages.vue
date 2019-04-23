@@ -3,13 +3,14 @@
     <h1 id="message">
       <span class="slidein">Here  is the Spectrogram. Check and click next. </span>
     </h1>
-    <button class="button bounce" @click="postImage">Next →</button>
+    <button class="button bounce" @click="openModal">Next →</button>
   </div>
 </template>
 
 <script>
 import postImage from '../utils/postImage';
 export default {
+  props: ['openModal'],
   methods: {
     async postImage(){
       const { spectrogram } = this.$store.state;
