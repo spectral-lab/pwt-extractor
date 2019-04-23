@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import Slider from './Slider.vue'
-import Messages from './Messages.vue'
-import Utilities from './Utilities.vue';
+import Slider from '../components/Slider.vue'
+import Messages from '../components/Messages.vue'
+import Utilities from '../components/Utilities.vue';
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram, renderPeakLines } from '../utils/plot'

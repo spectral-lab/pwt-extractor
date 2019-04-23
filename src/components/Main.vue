@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import OpenFile from './OpenFile.vue';
-import Viewer from './Viewer.vue';
+import OpenFile from '../pages/OpenFile.vue';
+import Viewer from '../pages/Viewer.vue';
 import { mapState } from 'vuex';
 import pages from '../constants/pages';
 
