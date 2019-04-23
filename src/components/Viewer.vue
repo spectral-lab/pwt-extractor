@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <Messages id="messages" />
+    <Messages />
     <div id="viewerWrapper">
       <div id="viewerArea">
         <div class="viewer-child-container spectrogram" :style="spectrogram">
@@ -17,7 +17,7 @@
         <slider v-model="viewerOpacity" />
       </div>
     </div>
-    <Utilities id="utilities" />
+    <Utilities />
   </div>
 </template>
 
@@ -103,16 +103,13 @@ export default {
 
 <style scoped>
   #container {
+    /* background: red; */
     display: flex;
     margin: 0 auto;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     height: 100%;
-  }
-  #messages {
-    margin: 0;
-    height: 20vh;
   }
   #viewerWrapper {
     position: relative;
@@ -153,12 +150,5 @@ export default {
  .viewer-child-container canvas {
    width: 100%;
    height: 100%;
- }
- #utilities {
-   /* margin: 0; */
-   display: flex;
-   justify-content: space-around;
-   align-items: center;
-   flex-direction: column;
  }
 </style>

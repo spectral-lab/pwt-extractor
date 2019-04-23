@@ -1,5 +1,5 @@
 <template>
-  <div id="container" class="wrapper">
+  <div id="utilities-container">
     <div id="playButtonContainer">
       <play-button />
     </div>
@@ -18,11 +18,11 @@ export default {
 </script>
 
 <style scoped>
-  #container {
+  #utilities-container {
     display: flex;
     margin: 0 auto;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     width: 90vw;
     height: 100%;

@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div id="message-container">
     <h1 id="message">
       <span class="slidein">Here  is the Spectrogram. Check and click next. </span>
     </h1>
@@ -77,7 +77,7 @@ export default {
     animation-timing-function: ease-in-out;
 
   }
-  #container {
+  #message-container {
     display: flex;
     margin: 0 auto;
     flex-direction: row;
