@@ -2,12 +2,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import mutations from './mutations';
 import actions from './actions';
-import screens from '../constants/screens';
+import pages from '../constants/pages';
 
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
-    screen: screens.OPEN_FILE,
+    page: pages.OPEN_FILE,
     sourceAudioBuffer: new AudioBuffer({
       length: 1, 
       numberOfChannels: 1, 

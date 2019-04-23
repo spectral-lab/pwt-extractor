@@ -9,12 +9,12 @@
 import OpenFile from './OpenFile.vue';
 import Viewer from './Viewer.vue';
 import { mapState } from 'vuex';
-import screens from '../constants/screens';
+import pages from '../constants/pages';
 
 export default {
   computed: mapState({
-    renderOpenFile: state => state.screen === screens.OPEN_FILE,
-    renderViewer: state => state.screen === screens.VIEWER,
+    renderOpenFile: state => state.page === pages.OPEN_FILE,
+    renderViewer: state => state.page === pages.VIEWER,
   }),
   components: {
     OpenFile,
