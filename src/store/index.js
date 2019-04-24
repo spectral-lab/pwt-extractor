@@ -7,7 +7,7 @@ import pages from '../constants/pages';
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
-    page: pages.OPEN_FILE,
+    page: pages.INSTRUCTION,
     sourceAudioBuffer: new AudioBuffer({
       length: 1, 
       numberOfChannels: 1, 
