@@ -1,5 +1,6 @@
 <template>
   <div id="main">
+    <Instruction v-if="renderInstruction" />
     <OpenFile v-if="renderOpenFile" />
     <Viewer v-if="renderViewer" />
   </div>
@@ -7,16 +8,19 @@
 
 <script>
 import { mapState } from 'vuex';
+import Instruction from '../pages/Instruction.vue';
 import OpenFile from '../pages/OpenFile.vue';
 import Viewer from '../pages/Viewer.vue';
 import pages from '../constants/pages';
 
 export default {
   computed: mapState({
+    renderInstruction: state => state.page === pages.INSTRUCTION,
     renderOpenFile: state => state.page === pages.OPEN_FILE,
     renderViewer: state => state.page === pages.VIEWER,
   }),
   components: {
+    Instruction,
     OpenFile,
     Viewer,
   }
