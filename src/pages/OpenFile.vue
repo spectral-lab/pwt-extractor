@@ -26,7 +26,8 @@ export default {
       this.$store.dispatch({
         type:'acceptAudio',
         payload: {
-          audioBuffer: normalizedAudioBuffer
+          audioBuffer: normalizedAudioBuffer,
+          fileName: f.name,
         }
       });
     }

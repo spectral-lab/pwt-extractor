@@ -17,7 +17,8 @@ const store = new Vuex.Store({
       times: [],
       freqs: [],
       magnitude2d: []
-    }
+    },
+    fileName: "",
   },
   mutations,
   actions
