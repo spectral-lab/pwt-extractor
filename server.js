@@ -8,6 +8,7 @@ app.get('/', function(request, response) {
   response.send('Hello World!')
 });
 
-app.listen(process.env.PORT, function() {
-  console.log("Node app is running at localhost:" + process.env.PORT);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, function() {
+  console.log(`Node app is running at localhost:${PORT}`);
 });
