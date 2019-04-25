@@ -14,8 +14,7 @@ const waveform = (audioBuffer, canvas) => {
 
   //  draw
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 0.3;
-  // ctx.globalCompositeOperation = 'copy';
+  ctx.lineWidth = 0.5;
   ctx.strokeStyle = WAVEFORM_COLOR;
   ctx.beginPath();
   
