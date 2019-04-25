@@ -1,11 +1,38 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
-      <slot />
+      <postForm v-bind="{proceedToLoading, closeModal, backToPostForm}" v-if="scene==='POST_FORM'"/>
+      <loading v-if="scene==='LOADING'"/>
     </div>
   </transition>
 </template>
 
+<script>
+import Loading from './Loading.vue';
+import PostForm from './PostForm.vue';
+import { POST_FORM, LOADING } from '../constants/modal-scenes';
+
+export default {
+  props: ['closeModal'],
+  data: function() {
+    return {
+      scene: POST_FORM,
+    };
+  },
+  methods: {
+    proceedToLoading(){
+      this.scene = LOADING;
+    },
+    backToPostForm(){
+      this.scene = POST_FORM;
+    }
+  },
+  components: {
+    Loading,
+    PostForm
+  }
+}
+</script>
 <style scoped>
 .modal-mask {
   position: fixed;
@@ -17,16 +44,6 @@
   background-color: rgba(0, 0, 0, .5);
   transition: opacity .3s ease;
 }
-
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
 
 .modal-enter {
   opacity: 0;
