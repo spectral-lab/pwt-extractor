@@ -10,6 +10,7 @@ import Messages from '../src/components/Messages';
 import Modal from '../src/components/Modal';
 import Slider from '../src/components/Slider';
 import Main from '../src/components/Main';
+import PostForm from '../src/components/PostForm';
 
 import Instruction from '../src/pages/Instruction';
 import OpenFile from '../src/pages/OpenFile';
@@ -33,6 +34,11 @@ storiesOf('Components', module)
  .add('Slider', () => ({
     components: { Slider },
     template: '<Slider />',
+  }))
+  .add('PostForm', () => ({
+    components: { PostForm },
+    store: createStore(),
+    template: '<PostForm />',
   }))
  .add('Modal', () => ({
     components: { Modal },
