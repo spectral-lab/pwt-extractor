@@ -26,7 +26,8 @@ export default {
       this.$store.dispatch({
         type:'acceptAudio',
         payload: {
-          audioBuffer: normalizedAudioBuffer
+          audioBuffer: normalizedAudioBuffer,
+          fileName: f.name,
         }
       });
     }
@@ -39,11 +40,11 @@ export default {
       background-color: #13161A;
     }
     #dropArea {
-      margin: 0 auto;
+      margin: 10vh auto;
       width: 80vw;
       height: 80vh;
       line-height: 80vh;
-      border: 1px dashed white;
+      border: 2px dashed white;
       font-size: 3rem;
       cursor: pointer;
     }

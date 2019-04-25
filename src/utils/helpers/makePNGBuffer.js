@@ -1,5 +1,5 @@
 import { PNG } from 'pngjs';
-import gainToDecibels from 'decibels/from-gain';
+import { decibelCurve } from '.'
 /**
  * @param  {Array.<Array.<number>>} imgAs2dArray Each element is in range from 0. to 1
  */
@@ -13,12 +13,8 @@ const makePNGBuffer = (imgAs2dArray) => {
   });
   // @ts-ignore
   png.data = imgAs2dArray.flat().map(magnitude => {
-    const blackThreshold = -78 // in dB
-    const db = gainToDecibels(magnitude);
-    const filterLow = Math.max(db, blackThreshold);
-    const normalized = (filterLow + Math.abs(blackThreshold))  / Math.abs(blackThreshold)
-    const ret = Math.round(normalized * 255.);
-    return [ret, ret, ret, 255];  // R, G, B, A
+    const ret = Math.round(decibelCurve(magnitude) * 255);
+    return [ret, ret, ret, 255];  // [R, G, B, A]
   }).flat();
   return PNG.sync.write(png, { 
     colorType: 0 

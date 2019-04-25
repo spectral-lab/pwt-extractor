@@ -10,6 +10,7 @@ const playAudioBuffer = (audioBuffer) => {
   source.buffer = audioBuffer;                    // tell the source which sound to play
   source.connect(context.destination);       // connect the source to the context's destination (the speakers)
   source.start(0);
+  return source;
 }
 
 export default playAudioBuffer;

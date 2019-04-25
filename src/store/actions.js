@@ -1,15 +1,16 @@
-import screens from '../constants/screens';
-import { SET_AUDIO_BUFFER, PUSH_SCREEN } from '../constants/mutation-types';
+import pages from '../constants/pages';
+import { SET_AUDIO_BUFFER, SWITCH_PAGE } from '../constants/mutation-types';
 
 const acceptAudio = ({ commit }, { payload }) => {
-  const { audioBuffer } = payload;
+  const { audioBuffer, fileName } = payload;
  commit({
     type: SET_AUDIO_BUFFER,
-    audioBuffer
+    audioBuffer,
+    fileName
   });
   commit({
-    type: PUSH_SCREEN,
-    screen: screens.VIEWER
+    type: SWITCH_PAGE,
+    page: pages.VIEWER
   })
 }
 

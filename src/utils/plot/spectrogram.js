@@ -1,8 +1,7 @@
 import { FFT, WindowFunction } from 'dsp.js-browser';
-import gainToDecibels from 'decibels/from-gain';
 import packIntoNdarray from 'ndarray-pack';
 import unpackFromNdArray from 'ndarray-unpack'
-import { calcYPos } from '../helpers'
+import { calcYPos, decibelCurve } from '../helpers'
 
 /**
  * Calculate STFT, Short Time Fourier Transform, on audio buffer and plot a spectrogram on canvas element.
@@ -56,7 +55,6 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
       /** @type {number} How many samples is in the original buffer  */
       const numberOfSamples = originalFloatArray.length;
       const numberOfRows = win.spectrum.length;
-      const blackThreshold = -78 // in dB
       const rect = {
         center: {
           x: canvas.width * win.getCenterSampleIdx(i) / numberOfSamples,
@@ -64,7 +62,7 @@ const spectrogram = (audioBuffer, canvas, _windowSize, sr) => new Promise(resolv
         },
         isLowestRect: rowIdx === 0,
         isUpmostRect: rowIdx === numberOfRows.length - 1,
-        luminance: ( Math.max(gainToDecibels(magnitude) , blackThreshold) + Math.abs(blackThreshold) ) / Math.abs(blackThreshold),
+        luminance: decibelCurve(magnitude),
       }
       const oneLowerRectCenterY = rect.isLowestRect ? canvas.height : calcYPos(freqs[rowIdx - 1], freqs, canvas.height);
       const oneUpperRectCenterY = rect.isUpmostRect ? 0 : calcYPos(freqs[rowIdx + 1], freqs, canvas.height);

@@ -12,11 +12,13 @@ const genPWT = (resultOfSTFT, lines) => {
     line.points.forEach((point) => {
       const column = point.position.column; 
       pwt.magnitude[idx][column] = point.magnitude;
-      pwt.pitch[idx][column] = ftom(point.frequency);
+      pwt.pitch[idx][column] = Math.max(ftom(point.frequency), 28);
     })
   });
   return pwt;
 } 
+
+export default genPWT;
 
 
 // Subfunctions
@@ -45,5 +47,3 @@ const initPWT = (resultOfSTFT, lines) => {
     }
   return initialPWT
 }
-
-export default genPWT;

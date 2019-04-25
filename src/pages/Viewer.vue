@@ -1,28 +1,32 @@
 <template>
   <div id="container">
-    <mock-post-button />
-    <div id="viewerArea">
-      <div class="viewer-child-container spectrogram" :style="spectrogram">
-        <canvas id="spectrogram" ref="spectrogram" />
+    <Messages v-bind="{openModal}" />
+    <Modal v-if="showModal" v-bind="{closeModal}" />
+    <div id="viewerWrapper">
+      <div id="viewerArea">
+        <div class="viewer-child-container spectrogram" :style="spectrogram">
+          <canvas id="spectrogram" ref="spectrogram" width="1920" height="1080" />
+        </div>
+        <div id="peakLinesContainer" class="viewer-child-container spectrogram" :style="spectrogram">
+          <canvas id="peakLines" ref="peakLines" width="1920" height="1080" />
+        </div>
+        <div class="viewer-child-container waveform" :style="waveform">
+          <canvas id="waveform" ref="waveform" width="1920" height="1080" />
+        </div>
       </div>
-      <div id="peakLinesContainer" class="viewer-child-container spectrogram" :style="spectrogram">
-        <canvas id="peakLines" ref="peakLines" />
-      </div>
-      <div class="viewer-child-container waveform" :style="waveform">
-        <canvas id="waveform" ref="waveform" />
+      <div id="sliderContainer">
+        <slider v-model="viewerOpacity" />
       </div>
     </div>
-    <div id="utilities">
-      <play-button />
-      <slider v-model="viewerOpacity" />
-    </div>
+    <Utilities />
   </div>
 </template>
 
 <script>
-import PlayButton from './PlayButton.vue';
-import MockPostButton from './MockPostButton.vue';
-import Slider from './Slider.vue'
+import Slider from '../components/Slider.vue'
+import Messages from '../components/Messages.vue'
+import Utilities from '../components/Utilities.vue';
+import Modal from '../components/Modal.vue';
 import { resample } from '../utils/audio'
 import { PeakLine } from '../classes' // eslint-disable-line no-unused-vars
 import { renderWaveform, renderSpectrogram, renderPeakLines } from '../utils/plot'
@@ -35,6 +39,7 @@ export default {
   data(){
     return {
       viewerOpacity: 50,
+      showModal: false,
     }
   },
   computed:{
@@ -59,6 +64,12 @@ export default {
     this.$eventHub.$off(RENDER_PEAK_LINES);
   },
   methods: {
+    openModal(){
+      this.$data.showModal = true;
+    },
+    closeModal(){
+      this.$data.showModal = false;
+    },
     async plotWaveformAndSpectrogram() {
       const audioBuffer = this.$store.state.sourceAudioBuffer;
       const DESIRED_SAMPLE_RATE = 22050;
@@ -84,9 +95,10 @@ export default {
     }
   },
   components:{
-    PlayButton,
+    Modal,
     Slider,
-    MockPostButton
+    Messages,
+    Utilities
   }
 }
 </script>
@@ -96,24 +108,37 @@ export default {
     display: flex;
     margin: 0 auto;
     flex-direction: column;
-    justify-content: center;
-    /* width: 70%; */
-    height: 100vh;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+  }
+  #viewerWrapper {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    background: rgba(91, 104, 129, 0.5);
+    /* background: linear-gradient(90deg, rgba(85, 164, 179, 0.4) 0%, rgba(85, 164, 179, 0.7) 50%, rgba(85, 164, 179, 0.4) 100%); */
+    /* opacity: 0.8; */
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
   }
   #viewerArea {
-   position: relative;
-   width: 100%;
-   height: 420px;
-   background: black;
+    position: relative;
+    width: 90vw;
+    height: 420px;
+    background: rgb(30, 30, 36);
   }
   @keyframes blinker {
     0%   { opacity: 1; }
-    20%  { opacity: 1; }
-    60%  { opacity: 0; }
+    40%  { opacity: 1; }
+    70%  { opacity: 0; }
     100% { opacity: 1; }
   }
-  #peakLinesContainer {
-    animation: blinker 3.6s infinite;
+  #peakLines {
+    animation: blinker 2.8s infinite;
   }
  .viewer-child-container {
    position: absolute;
@@ -126,11 +151,5 @@ export default {
  .viewer-child-container canvas {
    width: 100%;
    height: 100%;
- }
- #utilities {
-   margin: 32px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
  }
 </style>
