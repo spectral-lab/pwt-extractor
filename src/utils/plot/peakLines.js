@@ -9,7 +9,7 @@ const peakLines = (peakLines, spectrogram, canvas) => {
   const PEAKLINES_COLOR = 'rgb(0, 255 , 55)';
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 10;
   ctx.strokeStyle = PEAKLINES_COLOR;
 
   const totalColumns = spectrogram.times.length;

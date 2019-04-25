@@ -8,15 +8,8 @@
 </template>
 
 <script>
-import postImage from '../utils/postImage';
 export default {
   props: ['openModal'],
-  methods: {
-    async postImage(){
-      const { spectrogram } = this.$store.state;
-      await postImage(spectrogram, this.$eventHub);
-    }
-  }
 }
 </script>
 
