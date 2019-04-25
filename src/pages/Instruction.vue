@@ -41,12 +41,15 @@
     display: flex; 
     width: 100%;
     justify-content: right;
+    flex-direction: row-reverse;
   }
   .button {
+    padding: 10rem;
     background: none;
     border: none;
     color: inherit;
     font-size: inherit;
     cursor: pointer;
+    text-shadow: rgba(0, 0, 0, 1) 0.15rem 0.15rem 0.5rem;
   }
 </style>
