@@ -2,10 +2,11 @@ import pages from '../constants/pages';
 import { SET_AUDIO_BUFFER, SWITCH_PAGE } from '../constants/mutation-types';
 
 const acceptAudio = ({ commit }, { payload }) => {
-  const { audioBuffer } = payload;
+  const { audioBuffer, fileName } = payload;
  commit({
     type: SET_AUDIO_BUFFER,
-    audioBuffer
+    audioBuffer,
+    fileName
   });
   commit({
     type: SWITCH_PAGE,

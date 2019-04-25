@@ -3,7 +3,7 @@
     <div id="playButtonContainer">
       <play-button />
     </div>
-    <h1 id="songname" class="text">Evening Bird 1123 </h1>
+    <h1 id="songname" class="text">{{fileName}}</h1>
     <div class="text">window size: 1024</div>
   </div>
 </template>
@@ -11,6 +11,11 @@
 <script>
 import PlayButton from './PlayButton.vue';
 export default {
+  computed: {
+    fileName() {
+      return this.$store.state.fileName;
+    }
+  },
   components: {
     PlayButton,
   }
