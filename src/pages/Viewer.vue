@@ -7,13 +7,13 @@
     <div id="viewerWrapper">
       <div id="viewerArea">
         <div class="viewer-child-container spectrogram" :style="spectrogram">
-          <canvas id="spectrogram" ref="spectrogram" />
+          <canvas id="spectrogram" ref="spectrogram" width="1920" height="1080" />
         </div>
         <div id="peakLinesContainer" class="viewer-child-container spectrogram" :style="spectrogram">
-          <canvas id="peakLines" ref="peakLines" />
+          <canvas id="peakLines" ref="peakLines" width="1920" height="1080" />
         </div>
         <div class="viewer-child-container waveform" :style="waveform">
-          <canvas id="waveform" ref="waveform" />
+          <canvas id="waveform" ref="waveform" width="1920" height="1080" />
         </div>
       </div>
       <div id="sliderContainer">
