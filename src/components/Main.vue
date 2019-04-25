@@ -34,7 +34,7 @@ body {
   color: white;
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   text-align: center;
-  text-shadow: rgba(0, 0, 0, 0.18) 0.15rem 0.15rem 0.5rem;
+  text-shadow: rgba(0, 0, 0, 0.28) 0.15rem 0.15rem 0.5rem;
   margin: 0;
 }
 #main {
