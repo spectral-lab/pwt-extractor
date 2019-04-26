@@ -46,7 +46,8 @@ storiesOf('Components', module)
   }))
  .add('Messages', () => ({
     components: { Messages },
-    template: '<Messages />',
+    methods: {openModal: action("openModal")},
+    template: '<Messages v-bind:onClick="openModal" nextButtonActive=true text="hogehoge"/>',
   }))
   .add('Loading', () => ({
     components: { Loading },
