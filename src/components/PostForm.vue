@@ -6,12 +6,19 @@
       </slot>
     </div>
     <div class="modal-body">
-      <div>
-        Sensitivity  <input type="number" name="quantity" min="1" max="10" v-model="sensitivity" />
-      </div>
-      <div>
-        Degree  <input type="number" name="quantity" min="0" max="6" v-model="degree" />
-      </div>
+      <form>
+        <label for="line-shape">Line Shape</label>
+        <select v-model="degree">
+          <option selected value="0">Straight</option>
+          <option value="1">Linear</option>
+          <option value="2">Parabola</option>
+          <option value="6">Curve</option>
+        </select>
+      </form>
+      <form>
+        <label for="sensitivity">Sensitivity </label>
+        <input type="number" id="sensitivity" name="quantity" min="1" max="10" v-model="sensitivity" />
+      </form>
       <div>
         <button @click="postImage">Run</button>
       </div>
@@ -75,16 +82,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .modal-container {
   width: 300px;
-  height: 300px;
+  height: 240px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: rgba(42, 42, 51, 0.9);
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(212, 175, 175, 0.33);
+  box-shadow: 0 2px 8px rgba(212, 175, 175, 0.05);
   transition: all .3s ease;
   font-family: Helvetica, Arial, sans-serif;
 }
@@ -98,6 +105,37 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+
+form {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+select {
+  font-size: 1rem;
+  background-color: #13161A;
+  color: #EFFEFF;
+}
+
+input[type=number] {
+  padding: 0.1rem 0rem 0.1rem 1.5rem;
+  font-size: 1rem;
+  background-color: #13161A;
+  border-color: #ADADAD;
+  border-width: 0.5px;
+  color: #EFFEFF;
+}
+
+button {
+  border-radius: 100rem;
+  padding: 0.2rem 1.2rem;
+  font-size: 1rem;
+  background-color: #13161A;
+  border-color: #ADADAD;
+  border-width: 0.5px;
+  color: #EFFEFF;
 }
 
 </style>
