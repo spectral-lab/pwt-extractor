@@ -110,7 +110,9 @@ export default {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    height: 100%;
+    min-height: 100vh;
+    min-width: 100vw;
+    position: fixed;
   }
   #viewerWrapper {
     position: relative;
