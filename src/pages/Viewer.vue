@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <Messages v-bind="{openModal}" />
+    <Messages v-bind="{onClick: handleClick}" :text="currentMessage" :buttonActive="showButton" :buttonText="buttonText"/>
     <Modal v-if="showModal" v-bind="{closeModal}" />
     <div id="viewerWrapper">
       <div id="viewerArea">
@@ -34,12 +34,22 @@ import { SET_SPECTROGRAM } from '../constants/mutation-types';
 import { RENDER_PEAK_LINES } from '../constants/events';
 
 const fadedOpacity = value => value >= 0.5 ? 1.0 : value * 2.0
+const MESSAGES = {
+  LOADING: "Now, building your spectrogram. Just a moment.",
+  SPECTROGRAM_BUILT: "Here is the Spectrogram. Check and click next.",
+  COMPLETE: "You have done! Now you can play Starling on Ableton Live",
+};
+const NEXT_BUTTON_TEXT = "Next →";
+const EXTRACT_BUTTON_TEXT = "Extract Again";
 
 export default {
   data(){
     return {
       viewerOpacity: 50,
       showModal: false,
+      messageKey: "LOADING",
+      showButton: false,
+      buttonText: NEXT_BUTTON_TEXT,
     }
   },
   computed:{
@@ -54,6 +64,9 @@ export default {
       return {
         opacity: fadedOpacity(value)
       };
+    },
+    currentMessage() {
+      return MESSAGES[this.messageKey];
     }
   },
   mounted() {
@@ -64,11 +77,25 @@ export default {
     this.$eventHub.$off(RENDER_PEAK_LINES);
   },
   methods: {
+    handleClick() {
+      switch(this.$data.messageKey) {
+        case "LOADING":
+          break;
+        case "COMPLETE":
+        case "SPECTROGRAM_BUILT":
+          this.openModal();
+          break;
+        default:
+          break;
+      }
+    },
     openModal(){
       this.$data.showModal = true;
     },
     closeModal(){
       this.$data.showModal = false;
+      this.$data.messageKey = "COMPLETE";
+      this.$data.buttonText = EXTRACT_BUTTON_TEXT;
     },
     async plotWaveformAndSpectrogram() {
       const audioBuffer = this.$store.state.sourceAudioBuffer;
@@ -83,11 +110,13 @@ export default {
         windowSize, 
         DESIRED_SAMPLE_RATE
       );
-
       this.$store.commit({
         type: SET_SPECTROGRAM,
         spectrogram
       });
+      this.$data.messageKey = "SPECTROGRAM_BUILT";
+      this.$data.showButton = true;
+
     },
     /** @param {Array.<PeakLine>} peakLines */
     plotPeakLines(peakLines) {

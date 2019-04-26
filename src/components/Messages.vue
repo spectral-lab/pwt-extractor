@@ -1,15 +1,15 @@
 <template>
   <div id="message-container">
     <h1 id="message">
-      <span class="slidein">Here  is the Spectrogram. Check and click next. </span>
+      <span class="slidein">{{text}}</span>
     </h1>
-    <button class="button bounce" @click="openModal">Next →</button>
+    <button v-if="buttonActive" class="button bounce" @click="onClick">{{buttonText}}</button>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['openModal'],
+  props: ['onClick', 'text', 'buttonActive', 'buttonText'],
 }
 </script>
 
@@ -53,8 +53,8 @@ export default {
     100%   { opacity: 1; }
 }
   .bounce {
-    -webkit-animation: bounce 0.7s infinite, fadein 4s;
-    animation: bounce 0.7s infinite, fadein 4s;
+    -webkit-animation: bounce 0.7s infinite, fadein 0.1s;
+    animation: bounce 0.7s infinite, fadein 0.1s;
     
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
