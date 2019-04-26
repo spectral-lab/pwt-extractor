@@ -31,13 +31,13 @@ export default {
     height: 100%;
   }
   #songname {
-    color: rgb(255, 255, 255);
+    color: rgb(218, 218, 218);
     background: rgba(42, 42, 51, 0.9);
-    letter-spacing: 0.2rem;
+    letter-spacing: 0.1rem;
     padding: 1rem 3rem;
     margin: 1rem 3rem;
     text-shadow: 0px 0px;
     font-size: 1.5rem;
-    font-weight:100;
+    font-weight:300;
   }
 </style>
