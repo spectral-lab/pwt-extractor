@@ -1,5 +1,5 @@
 # pwt-extractor
-
+## This repository is now deprecated. It has been moved to https://github.com/spectral-lab/spectral-lab
 ## Project Docs
 [HERE!](https://scrapbox.io/frontier-of-music/Project_Starling_Docs_Main_Page)
 
