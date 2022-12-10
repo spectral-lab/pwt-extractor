@@ -15,7 +15,7 @@
   "dependencies": {
     "decibels": "^2.0.0",
     "dsp.js-browser": "^1.0.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "lodash": "^4.17.11",
     "ndarray-normalize": "^1.0.0",
     "ndarray-ops": "^1.2.2",
